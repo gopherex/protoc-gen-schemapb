@@ -1,0 +1,40 @@
+{
+  "errors": [
+    {
+      "code": "ERROR_CODE_REQUIRED_MISSING",
+      "constraint": "required",
+      "message": "required",
+      "path": "ref",
+      "pathSegments": [
+        {
+          "fieldNumber": 1,
+          "key": "ref"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "doubleValue": 0
+      },
+      "code": "ERROR_CODE_GT_VIOLATED",
+      "constraint": "gt",
+      "expected": {
+        "doubleValue": 0
+      },
+      "message": "must be \u003e 0",
+      "path": "ratio32",
+      "pathSegments": [
+        {
+          "fieldNumber": 15,
+          "key": "ratio32"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Kinds",
+    "namespace": "conformance.v1"
+  }
+}

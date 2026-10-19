@@ -172,6 +172,14 @@ func (b *builder) field(field *protogen.Field) (*schemapb.Schema_Field, error) {
 }
 
 func (b *builder) listKind(field *protogen.Field, out *schemapb.Schema_Field) error {
+	return listOf(field.Desc, out, func(item *schemapb.Schema_Field) error { return b.singular(field, item) })
+}
+
+// listOf merges a list kind whose single item is derived by elem; the
+// option's item, if any, carries the element constraints.
+func listOf(
+	desc protoreflect.FieldDescriptor, out *schemapb.Schema_Field, elem func(*schemapb.Schema_Field) error,
+) error {
 	list := &schemapb.Schema_Field_List{}
 
 	switch k := out.GetKind().(type) {
@@ -179,11 +187,11 @@ func (b *builder) listKind(field *protogen.Field, out *schemapb.Schema_Field) er
 	case *schemapb.Schema_Field_List_:
 		list = k.List
 	default:
-		return invalid(field.Desc, "a repeated field takes the list kind, not "+kindName(out))
+		return invalid(desc, "a repeated field takes the list kind, not "+kindName(out))
 	}
 
 	if len(list.GetItems()) > 1 {
-		return invalid(field.Desc, "a repeated field takes at most one item definition")
+		return invalid(desc, "a repeated field takes at most one item definition")
 	}
 
 	item := &schemapb.Schema_Field{}
@@ -192,7 +200,7 @@ func (b *builder) listKind(field *protogen.Field, out *schemapb.Schema_Field) er
 	}
 
 	item.Name = "item"
-	if err := b.singular(field, item); err != nil {
+	if err := elem(item); err != nil {
 		return err
 	}
 
@@ -374,12 +382,9 @@ func (b *builder) messageKind(field *protogen.Field, out *schemapb.Schema_Field)
 	case "google.protobuf.Empty":
 		derived.Kind = &schemapb.Schema_Field_Object_{Object: &schemapb.Schema_Field_Object{Schema: &schemapb.Schema{}}}
 	case "google.protobuf.FieldMask":
-		derived.Kind = &schemapb.Schema_Field_List_{List: &schemapb.Schema_Field_List{
-			Items: []*schemapb.Schema_Field{{
-				Name: "item",
-				Kind: &schemapb.Schema_Field_String_{String_: &schemapb.Schema_Field_String{}},
-			}},
-		}}
+		return listOf(field.Desc, out, func(item *schemapb.Schema_Field) error {
+			return scalarKind(field.Desc, protoreflect.StringKind, item)
+		})
 	case "google.protobuf.Any":
 		return invalid(field.Desc, "google.protobuf.Any is not supported")
 	default:

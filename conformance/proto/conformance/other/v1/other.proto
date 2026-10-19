@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package conformance.other.v1;
+
+import "schemapb/options/v1/options.proto";
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/other/v1;otherv1";
+
+// A message of another package, referenced across files.
+message Ref {
+  string id = 1 [(schemapb.options.v1.field).string = {min_len: 3}];
+}

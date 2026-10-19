@@ -1,0 +1,16 @@
+edition = "2023";
+
+package conformance.edition.v1;
+
+import "schemapb/options/v1/options.proto";
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/edition/v1;editionv1";
+
+// Editions presence: explicit by default, implicit per field.
+message Doc {
+  string title = 1 [(schemapb.options.v1.field) = {required: true, string: {min_len: 1}}];
+  int32 count = 2 [
+    features.field_presence = IMPLICIT,
+    (schemapb.options.v1.field).int32 = {gte: 1}
+  ];
+}

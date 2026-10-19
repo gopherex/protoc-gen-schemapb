@@ -1,0 +1,40 @@
+{
+  "errors": [
+    {
+      "code": "ERROR_CODE_REQUIRED_MISSING",
+      "constraint": "required",
+      "message": "required",
+      "path": "title",
+      "pathSegments": [
+        {
+          "fieldNumber": 1,
+          "key": "title"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "int64Value": "0"
+      },
+      "code": "ERROR_CODE_GTE_VIOLATED",
+      "constraint": "gte",
+      "expected": {
+        "int64Value": "1"
+      },
+      "message": "must be \u003e= 1",
+      "path": "count",
+      "pathSegments": [
+        {
+          "fieldNumber": 2,
+          "key": "count"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Doc",
+    "namespace": "conformance.edition.v1"
+  }
+}

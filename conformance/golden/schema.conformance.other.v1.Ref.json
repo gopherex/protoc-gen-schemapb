@@ -1,0 +1,15 @@
+{
+  "description": "A message of another package, referenced across files.",
+  "fields": [
+    {
+      "name": "id",
+      "string": {
+        "minLen": "3"
+      }
+    }
+  ],
+  "id": {
+    "name": "Ref",
+    "namespace": "conformance.other.v1"
+  }
+}

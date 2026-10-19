@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package conformance.names.v1;
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/names/v1;namesv1";
+
+// Foo.Bar and Foo_Bar share the TypeScript identifier Foo_Bar: protobuf-es
+// salts the later one with "$", and the generated validators must import
+// exactly those names. TypeScript only: the same names clash in
+// protoc-gen-go itself.
+message Foo {
+  message Bar {
+    string a = 1;
+  }
+  Bar bar = 1;
+}
+
+message Foo_Bar {
+  string b = 1;
+}
+
+// A reserved word as a message name.
+message Object {
+  string c = 1;
+}

@@ -63,7 +63,10 @@ func run() error {
 		return fmt.Errorf("parse request: %w", err)
 	}
 
-	plugin.SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+	plugin.SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL |
+		pluginpb.CodeGeneratorResponse_FEATURE_SUPPORTS_EDITIONS)
+	plugin.SupportedEditionsMinimum = descriptorpb.Edition_EDITION_PROTO2
+	plugin.SupportedEditionsMaximum = descriptorpb.Edition_EDITION_2023
 
 	for _, f := range plugin.Files {
 		if !f.Generate {

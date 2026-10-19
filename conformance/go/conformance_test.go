@@ -19,6 +19,8 @@ import (
 
 	"github.com/gopherex/schemapb/go/schemapb"
 
+	editionv1 "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/edition/v1"
+	otherv1 "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/other/v1"
 	conformancev1 "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/v1"
 )
 
@@ -57,7 +59,11 @@ func loadCases(t *testing.T) []testCase {
 func newMessage(t *testing.T, name string) validated {
 	t.Helper()
 
-	_ = conformancev1.File_conformance_v1_conformance_proto // link the generated types
+	// link the generated types into the registry
+	_ = conformancev1.File_conformance_v1_conformance_proto
+	_ = conformancev1.File_conformance_v1_kinds_proto
+	_ = otherv1.File_conformance_other_v1_other_proto
+	_ = editionv1.File_conformance_edition_v1_edition_proto
 
 	mt, err := protoregistry.GlobalTypes.FindMessageByName(protoreflect.FullName(name))
 	if err != nil {
@@ -111,6 +117,7 @@ func TestSchemas(t *testing.T) {
 
 	for _, name := range []string{
 		"conformance.v1.User", "conformance.v1.User.Settings", "conformance.v1.Address", "conformance.v1.Node",
+		"conformance.v1.Kinds", "conformance.other.v1.Ref", "conformance.edition.v1.Doc",
 	} {
 		msg := newMessage(t, name)
 		checkGolden(t, filepath.Join("..", "golden", "schema."+name+".json"), msg.SchemaPB())

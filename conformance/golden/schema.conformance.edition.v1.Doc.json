@@ -1,0 +1,22 @@
+{
+  "description": "Editions presence: explicit by default, implicit per field.",
+  "fields": [
+    {
+      "name": "title",
+      "required": true,
+      "string": {
+        "minLen": "1"
+      }
+    },
+    {
+      "int32": {
+        "gte": 1
+      },
+      "name": "count"
+    }
+  ],
+  "id": {
+    "name": "Doc",
+    "namespace": "conformance.edition.v1"
+  }
+}

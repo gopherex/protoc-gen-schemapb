@@ -1,0 +1,247 @@
+{
+  "errors": [
+    {
+      "code": "ERROR_CODE_REQUIRED_MISSING",
+      "constraint": "required",
+      "message": "required",
+      "path": "ref",
+      "pathSegments": [
+        {
+          "fieldNumber": 1,
+          "key": "ref"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "x"
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "3"
+      },
+      "message": "length must be at least 3",
+      "path": "refs[0].id",
+      "pathSegments": [
+        {
+          "fieldNumber": 2,
+          "key": "refs"
+        },
+        {
+          "index": "0"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "id"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "uint64Value": "2"
+      },
+      "code": "ERROR_CODE_MAX_ITEMS_VIOLATED",
+      "constraint": "max_items",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "must have at most 1 items",
+      "path": "mask",
+      "pathSegments": [
+        {
+          "fieldNumber": 4,
+          "key": "mask"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "int64Value": "0"
+      },
+      "code": "ERROR_CODE_GT_VIOLATED",
+      "constraint": "gt",
+      "expected": {
+        "int64Value": "0"
+      },
+      "message": "must be \u003e 0",
+      "path": "wrapped",
+      "pathSegments": [
+        {
+          "fieldNumber": 7,
+          "key": "wrapped"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "abcd"
+      },
+      "code": "ERROR_CODE_MAX_LEN_VIOLATED",
+      "constraint": "max_len",
+      "expected": {
+        "uint64Value": "3"
+      },
+      "message": "length must be at most 3",
+      "path": "label",
+      "pathSegments": [
+        {
+          "fieldNumber": 9,
+          "key": "label"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "doubleValue": 2
+      },
+      "code": "ERROR_CODE_LTE_VIOLATED",
+      "constraint": "lte",
+      "expected": {
+        "doubleValue": 1
+      },
+      "message": "must be \u003c= 1",
+      "path": "ratio",
+      "pathSegments": [
+        {
+          "fieldNumber": 11,
+          "key": "ratio"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "int64Value": "9007199254740993"
+      },
+      "code": "ERROR_CODE_LT_VIOLATED",
+      "constraint": "lt",
+      "expected": {
+        "int64Value": "10"
+      },
+      "message": "must be \u003c 10",
+      "path": "big",
+      "pathSegments": [
+        {
+          "fieldNumber": 12,
+          "key": "big"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "uint64Value": "10"
+      },
+      "code": "ERROR_CODE_LT_VIOLATED",
+      "constraint": "lt",
+      "expected": {
+        "uint64Value": "10"
+      },
+      "message": "must be \u003c 10",
+      "path": "fixed",
+      "pathSegments": [
+        {
+          "fieldNumber": 13,
+          "key": "fixed"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "int64Value": "-5"
+      },
+      "code": "ERROR_CODE_GT_VIOLATED",
+      "constraint": "gt",
+      "expected": {
+        "int64Value": "-5"
+      },
+      "message": "must be \u003e -5",
+      "path": "signed",
+      "pathSegments": [
+        {
+          "fieldNumber": 14,
+          "key": "signed"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "doubleValue": 0
+      },
+      "code": "ERROR_CODE_GT_VIOLATED",
+      "constraint": "gt",
+      "expected": {
+        "doubleValue": 0
+      },
+      "message": "must be \u003e 0",
+      "path": "ratio32",
+      "pathSegments": [
+        {
+          "fieldNumber": 15,
+          "key": "ratio32"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "by_num.7",
+      "pathSegments": [
+        {
+          "fieldNumber": 16,
+          "key": "by_num"
+        },
+        {
+          "key": "7"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "no"
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "3"
+      },
+      "message": "length must be at least 3",
+      "path": "by_flag.false.id",
+      "pathSegments": [
+        {
+          "fieldNumber": 17,
+          "key": "by_flag"
+        },
+        {
+          "key": "false"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "id"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Kinds",
+    "namespace": "conformance.v1"
+  }
+}

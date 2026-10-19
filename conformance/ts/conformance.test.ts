@@ -11,7 +11,10 @@ import {
   type Validator,
 } from "@gopherex/schemapb";
 import { describe, expect, it } from "vitest";
+import { DocValidator } from "./gen/conformance/edition/v1/edition_schemapb.js";
+import { RefValidator } from "./gen/conformance/other/v1/other_schemapb.js";
 import { AddressValidator, NodeValidator, User_SettingsValidator, UserValidator } from "./gen/conformance/v1/conformance_schemapb.js";
+import { KindsValidator } from "./gen/conformance/v1/kinds_schemapb.js";
 
 const root = join(import.meta.dirname, "..");
 
@@ -26,6 +29,9 @@ const validators: Record<string, Validator<DescMessage>> = {
   "conformance.v1.Address": AddressValidator,
   "conformance.v1.Node": NodeValidator,
   "conformance.v1.User.Settings": User_SettingsValidator,
+  "conformance.v1.Kinds": KindsValidator,
+  "conformance.other.v1.Ref": RefValidator,
+  "conformance.edition.v1.Doc": DocValidator,
 };
 
 const cases = JSON.parse(readFileSync(join(root, "cases.json"), "utf8")) as Case[];

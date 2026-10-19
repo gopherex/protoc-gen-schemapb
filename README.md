@@ -136,6 +136,10 @@ UserValidator.validate(user);            // throws ValidationFailure when someth
 UserValidator.schema;                    // the embedded schemapb.Schema
 ```
 
+On a Connect client the server's result arrives in the error details:
+`ConnectError.from(e).findDetails(ValidationResultSchema)` (from
+`@gopherex/schemapb`).
+
 ## Errors
 
 Every `ValidationError` carries:

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package conformance.v1;
+
+import "conformance/other/v1/other.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
+import "schemapb/options/v1/options.proto";
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/v1;conformancev1";
+
+// The remaining mapping paths: cross-package refs, well-known types, map
+// key kinds, 64-bit integers as JS strings.
+message Kinds {
+  conformance.other.v1.Ref ref = 1 [(schemapb.options.v1.field).required = true];
+  repeated conformance.other.v1.Ref refs = 2;
+  google.protobuf.Empty empty = 3;
+  google.protobuf.FieldMask mask = 4 [(schemapb.options.v1.field).list = {
+    max_items: 1
+    items: {string: {min_len: 1}}
+  }];
+  google.protobuf.Value value = 5;
+  google.protobuf.ListValue values = 6;
+  google.protobuf.Int64Value wrapped = 7 [(schemapb.options.v1.field).int64 = {gt: 0}];
+  google.protobuf.BoolValue flag = 8;
+  google.protobuf.StringValue label = 9 [(schemapb.options.v1.field).string = {max_len: 3}];
+  google.protobuf.BytesValue blob = 10;
+  google.protobuf.DoubleValue ratio = 11 [(schemapb.options.v1.field).double = {lte: 1}];
+  int64 big = 12 [jstype = JS_STRING, (schemapb.options.v1.field).int64 = {lt: 10}];
+  fixed64 fixed = 13 [(schemapb.options.v1.field).uint64 = {lt: 10}];
+  sint32 signed = 14 [(schemapb.options.v1.field).int32 = {gt: -5}];
+  float ratio32 = 15 [(schemapb.options.v1.field).float = {gt: 0}];
+  map<int32, string> by_num = 16 [(schemapb.options.v1.field).map = {value_field: {string: {min_len: 1}}}];
+  map<bool, conformance.other.v1.Ref> by_flag = 17;
+}

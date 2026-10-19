@@ -13,6 +13,6 @@ generate:
   inputs:
     - directory: schemapb
     - directory:
-        path: conformance/v1
+        path: conformance
         root: conformance/proto
   plugins: []

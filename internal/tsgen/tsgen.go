@@ -90,7 +90,7 @@ func GenerateFile(plugin *protogen.Plugin, file *protogen.File, opts Options) er
 
 		desc := names[msg.Desc.FullName()]
 		entries = append(entries, entry{
-			validator: safeIdentifier(identifier(file.Desc, msg.Desc) + "Validator"),
+			validator: validatorName(desc),
 			desc:      desc,
 			full:      string(msg.Desc.FullName()),
 			raw:       base64.StdEncoding.EncodeToString(raw),
@@ -119,6 +119,14 @@ func GenerateFile(plugin *protogen.Plugin, file *protogen.File, opts Options) er
 	}
 
 	return nil
+}
+
+// validatorName mirrors the descriptor name, so clashes resolved by
+// protobuf-es ("Foo_BarSchema$") resolve the same way ("Foo_BarValidator$").
+func validatorName(desc string) string {
+	i := strings.LastIndex(desc, "Schema")
+
+	return desc[:i] + "Validator" + desc[i+len("Schema"):]
 }
 
 func collect(messages []*protogen.Message) []*protogen.Message {

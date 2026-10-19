@@ -1,0 +1,146 @@
+{
+  "defs": {
+    "conformance.other.v1.Ref": {
+      "description": "A message of another package, referenced across files.",
+      "fields": [
+        {
+          "name": "id",
+          "string": {
+            "minLen": "3"
+          }
+        }
+      ],
+      "id": {
+        "name": "Ref",
+        "namespace": "conformance.other.v1"
+      }
+    }
+  },
+  "description": "The remaining mapping paths: cross-package refs, well-known types, map\nkey kinds, 64-bit integers as JS strings.",
+  "fields": [
+    {
+      "name": "ref",
+      "ref": {
+        "name": "conformance.other.v1.Ref"
+      },
+      "required": true
+    },
+    {
+      "list": {
+        "items": [
+          {
+            "name": "item",
+            "ref": {
+              "name": "conformance.other.v1.Ref"
+            }
+          }
+        ]
+      },
+      "name": "refs"
+    },
+    {
+      "name": "empty",
+      "object": {
+        "schema": {}
+      }
+    },
+    {
+      "list": {
+        "items": [
+          {
+            "name": "item",
+            "string": {
+              "minLen": "1"
+            }
+          }
+        ],
+        "maxItems": "1"
+      },
+      "name": "mask"
+    },
+    {
+      "json": {},
+      "name": "value"
+    },
+    {
+      "json": {},
+      "name": "values"
+    },
+    {
+      "int64": {
+        "gt": "0"
+      },
+      "name": "wrapped"
+    },
+    {
+      "bool": {},
+      "name": "flag"
+    },
+    {
+      "name": "label",
+      "string": {
+        "maxLen": "3"
+      }
+    },
+    {
+      "bytes": {},
+      "name": "blob"
+    },
+    {
+      "double": {
+        "lte": 1
+      },
+      "name": "ratio"
+    },
+    {
+      "int64": {
+        "lt": "10"
+      },
+      "name": "big"
+    },
+    {
+      "name": "fixed",
+      "uint64": {
+        "lt": "10"
+      }
+    },
+    {
+      "int32": {
+        "gt": -5
+      },
+      "name": "signed"
+    },
+    {
+      "float": {
+        "gt": 0
+      },
+      "name": "ratio32"
+    },
+    {
+      "map": {
+        "valueField": {
+          "name": "value",
+          "string": {
+            "minLen": "1"
+          }
+        }
+      },
+      "name": "by_num"
+    },
+    {
+      "map": {
+        "valueField": {
+          "name": "value",
+          "ref": {
+            "name": "conformance.other.v1.Ref"
+          }
+        }
+      },
+      "name": "by_flag"
+    }
+  ],
+  "id": {
+    "name": "Kinds",
+    "namespace": "conformance.v1"
+  }
+}
