@@ -250,9 +250,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gopherex/schemapb@npm:1.9.3":
-  version: 1.9.3
-  resolution: "@gopherex/schemapb@npm:1.9.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40gopherex%2Fschemapb%2F1.9.3%2Fd2f774a5e1d7d9cb994ceec5d1dfc5b49972c8e8"
+"@gopherex/schemapb@npm:1.9.4":
+  version: 1.9.4
+  resolution: "@gopherex/schemapb@npm:1.9.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40gopherex%2Fschemapb%2F1.9.4%2Fa36cdfd321b0eb4a8012652649255bf461f1f73f"
   dependencies:
     "@bufbuild/cel": "npm:0.6.0"
     "@bufbuild/protobuf": "npm:^2.11.0"
@@ -260,7 +260,7 @@ __metadata:
     semver: "npm:^7.7.0"
   peerDependencies:
     zod: ^4.0.0
-  checksum: 10c0/e5284f26c084cf1553e5db22e4a8f5266e23851153fdb5451ff217317fedd4ff2c31c3998e78617e753131261a931fe26bff612720792ca36cb83a03e745533c
+  checksum: 10c0/09b853cd07f2ea7709ce33001ff943a8a46f68fc00dc1fe4d98783ca07072532de555a56717d09ff41e4adc56fe0903504df067a9cced70d15366ca3ed6fc7f3
   languageName: node
   linkType: hard
 
@@ -974,7 +974,7 @@ __metadata:
   dependencies:
     "@bufbuild/protobuf": "npm:^2.11.0"
     "@bufbuild/protoc-gen-es": "npm:^2.11.0"
-    "@gopherex/schemapb": "npm:1.9.3"
+    "@gopherex/schemapb": "npm:1.9.4"
     "@types/node": "npm:^26.1.2"
     typescript: "npm:^5.9.0"
     vitest: "npm:^3.2.0"
