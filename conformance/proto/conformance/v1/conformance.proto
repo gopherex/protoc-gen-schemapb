@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package conformance.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "schemapb/options/v1/options.proto";
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/v1;conformancev1";
+option (schemapb.options.v1.file) = {version: "v1.0.0"};
+
+// Tier of a user account.
+enum Tier {
+  TIER_UNSPECIFIED = 0 [(schemapb.options.v1.enum_value).exclude = true];
+  // Free tier.
+  TIER_FREE = 1 [(schemapb.options.v1.enum_value).label = "Free"];
+  TIER_GOLD = 2 [(schemapb.options.v1.enum_value).label = "Gold"];
+  TIER_LEGACY = 3 [deprecated = true];
+}
+
+// A postal address.
+message Address {
+  string city = 1 [(schemapb.options.v1.field).string = {min_len: 1}];
+  string zip = 2 [(schemapb.options.v1.field).string = {pattern: "^[0-9]{5}$"}];
+}
+
+// A node of a tree, to exercise recursion.
+message Node {
+  string name = 1 [(schemapb.options.v1.field).string = {min_len: 1}];
+  repeated Node children = 2 [(schemapb.options.v1.field).list = {max_items: 2}];
+}
+
+// A user account: the kitchen sink of the mapping.
+message User {
+  option (schemapb.options.v1.message) = {
+    rules: [
+      {id: "adult-gold", expr: "this.tier != 'TIER_GOLD' || this.age >= 18", message: "gold users must be adults"},
+      {id: "short-name", expr: "size(this.name) < 20", message: "long name", severity: SEVERITY_WARNING}
+    ]
+  };
+
+  // Per-user settings, nested to exercise nested naming.
+  message Settings {
+    string locale = 1 [(schemapb.options.v1.field).string = {in: ["en", "ru"]}];
+  }
+
+  // Display name.
+  string name = 1 [(schemapb.options.v1.field).string = {min_len: 2, max_len: 32}];
+  int32 age = 2 [(schemapb.options.v1.field).int32 = {gte: 0, lte: 150}];
+  optional string email = 3 [(schemapb.options.v1.field) = {required: true, string: {format: "email"}}];
+  Tier tier = 4;
+  repeated string tags = 5 [(schemapb.options.v1.field).list = {
+    max_items: 3
+    unique: true
+    items: {string: {min_len: 1}}
+  }];
+  map<string, int64> quotas = 6 [(schemapb.options.v1.field).map = {
+    max_entries: 2
+    value_field: {int64: {gt: 0}}
+  }];
+  Address address = 7 [(schemapb.options.v1.field).required = true];
+  repeated Address previous = 8;
+  map<string, Address> offices = 9;
+  google.protobuf.Timestamp created_at = 10 [(schemapb.options.v1.field).timestamp = {gt: {seconds: 0}}];
+  google.protobuf.Duration session = 11 [(schemapb.options.v1.field).duration = {lte: {seconds: 3600}}];
+  google.protobuf.UInt32Value limit = 12 [(schemapb.options.v1.field).uint32 = {lte: 100}];
+  google.protobuf.Struct meta = 13;
+  string password = 14 [(schemapb.options.v1.field) = {secret: true, string: {min_len: 8}}];
+  // Only checked for gold users.
+  string coupon = 15 [(schemapb.options.v1.field) = {
+    when: "root.tier == 'TIER_GOLD'"
+    string: {len: 6}
+  }];
+  oneof contact {
+    option (schemapb.options.v1.oneof).required = true;
+    string phone = 16 [(schemapb.options.v1.field).string = {pattern: "^\\+[0-9]+$"}];
+    string telegram = 17;
+  }
+  Node tree = 18;
+  bytes avatar = 19 [(schemapb.options.v1.field).bytes = {max_len: 4}];
+  double score = 20 [(schemapb.options.v1.field).double = {gte: 0, lt: 1}];
+  uint64 credits = 21;
+  Settings settings = 23;
+  string plan = 22 [(schemapb.options.v1.field).choice = {
+    options: [{value: {string_value: "basic"}}, {value: {string_value: "pro"}}]
+  }];
+}
+
+// A message without a generated validator.
+message Internal {
+  option (schemapb.options.v1.message).skip = true;
+  string secret = 1;
+}

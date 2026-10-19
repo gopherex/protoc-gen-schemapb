@@ -1,0 +1,54 @@
+{
+  "errors": [
+    {
+      "actual": {
+        "stringValue": "SHORT"
+      },
+      "code": "ERROR_CODE_LEN_MISMATCH",
+      "constraint": "len",
+      "expected": {
+        "uint64Value": "6"
+      },
+      "message": "length must be exactly 6",
+      "path": "coupon",
+      "pathSegments": [
+        {
+          "fieldNumber": 15,
+          "key": "coupon"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_RULE_VIOLATED",
+      "expr": "this.tier != 'TIER_GOLD' || this.age \u003e= 18",
+      "message": "gold users must be adults",
+      "path": "adult-gold",
+      "pathSegments": [
+        {
+          "key": "adult-gold"
+        }
+      ],
+      "ruleId": "adult-gold",
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_RULE_VIOLATED",
+      "expr": "size(this.name) \u003c 20",
+      "message": "long name",
+      "path": "short-name",
+      "pathSegments": [
+        {
+          "key": "short-name"
+        }
+      ],
+      "ruleId": "short-name",
+      "severity": "SEVERITY_WARNING"
+    }
+  ],
+  "schema": {
+    "name": "User",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  }
+}

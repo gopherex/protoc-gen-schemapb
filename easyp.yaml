@@ -1,0 +1,18 @@
+lint:
+  use:
+    - DEFAULT
+  enum_zero_value_suffix: UNSPECIFIED
+  allow_comment_ignores: false
+  except:
+    - PACKAGE_DIRECTORY_MATCH
+  ignore:
+    - conformance
+deps:
+  - github.com/gopherex/schemapb@v1.8.2
+generate:
+  inputs:
+    - directory: schemapb
+    - directory:
+        path: conformance/v1
+        root: conformance/proto
+  plugins: []

@@ -1,0 +1,126 @@
+syntax = "proto3";
+
+package schemapb.options.v1;
+
+import "google/protobuf/descriptor.proto";
+import "schemapb/schema.proto";
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/schemapb/options/v1;optionsv1";
+
+/*
+ * Options that turn proto messages into schemapb schemas. protoc-gen-go-schemapb
+ * and protoc-gen-ts-schemapb read them at generation time, build one
+ * schemapb.Schema per message, check and compile it (a defect fails the
+ * protoc run), and embed it in the generated code. The generated code
+ * depends only on the schemapb runtime, never on this file.
+ *
+ * Every message gets a schema. Its fields are the message fields, named by
+ * their proto names; a nested message field is a Ref into the root schema's
+ * defs, keyed by the message's full name. The value a message presents to
+ * the engine is described in the runtime packages (Go protomsg, TS
+ * protomsg.ts): implicit-presence fields are always present, explicit
+ * presence fields (optional, message, oneof member) only when set, enums by
+ * value name.
+ *
+ * Expressions (rules, when, normalize) are CEL. In a message rule `this` is
+ * the message; `root` is always the message being validated at the top.
+ *
+ * Translation: errors are data (code, typed expected/actual, rule id), and
+ * clients render them from a per-locale catalog keyed by the ErrorCode
+ * name, or by the rule id for a violated rule (schemapb Catalog /
+ * formatMessage). Give every rule an `id` to make its message
+ * translatable; the generated oneof rules carry "oneof:<name>".
+ */
+
+/* FileOptions apply to every schema generated from the file. */
+message FileOptions {
+  /* Version of the generated schema identities (semver, e.g. "v1.2.0").
+   * Empty => unversioned. */
+  string version = 1;
+  /* Namespace of the generated schema identities. Absent => the proto
+   * package. */
+  optional string namespace = 2;
+}
+
+/* MessageOptions configure the schema of one message. */
+message MessageOptions {
+  /* Generate no validator for this message. It can still be referenced:
+   * fields of this type are validated as part of their parent. */
+  bool skip = 1;
+  /* Message-level CEL rules; `this` is the message. */
+  repeated schemapb.Schema.Field.Rule rules = 2;
+  /* Minimum number of present fields. */
+  optional uint64 min_properties = 3;
+  /* Maximum number of present fields. */
+  optional uint64 max_properties = 4;
+  /* Mustache render templates (schemapb.Schema.templates). */
+  map<string, string> templates = 5;
+  /* Schema description. Absent => the message's leading comment. */
+  optional string description = 6;
+}
+
+/*
+ * The field option is a schemapb.Schema.Field. The generator derives the
+ * name and the kind from the proto field; what the option sets is merged
+ * in:
+ *
+ *   - name must be empty;
+ *   - a kind, if set, must match the proto type: int32/sint32/sfixed32 =>
+ *     int32, int64/sint64/sfixed64 => int64, uint32/fixed32 => uint32,
+ *     uint64/fixed64 => uint64, float, double, bool, string, bytes;
+ *     Timestamp => timestamp, Duration => duration, a wrapper => the wrapped
+ *     kind; Struct/Value/ListValue => json. A scalar field may instead be a
+ *     choice with explicit options. An enum field is a choice whose options
+ *     are the enum values; the option may set open/options_expr/default but
+ *     not options. A repeated field takes list (its single item, if given,
+ *     constrains the elements), a map field takes map (value_field, if
+ *     given, constrains the values). A message field takes no kind;
+ *   - computed is not allowed: a message field is input, not derived;
+ *   - required is allowed only where presence exists (optional, message,
+ *     oneof member); an implicit-presence field is always present, use a
+ *     constraint (min_len, gt, ...) instead;
+ *   - description defaults to the field's leading comment, deprecated to
+ *     the proto deprecated option.
+ */
+extend google.protobuf.FieldOptions {
+  /* Schema of the field. */
+  schemapb.Schema.Field field = 60050;
+}
+
+/* OneofOptions configure a (non-synthetic) oneof. */
+message OneofOptions {
+  /* One member must be set. Reported as RULE_VIOLATED with rule id
+   * "oneof:<name>". */
+  bool required = 1;
+}
+
+/* EnumValueOptions configure the choice option an enum value becomes. */
+message EnumValueOptions {
+  /* Leave this value out of the allowed options (e.g. the zero value, to
+   * make the field effectively required). */
+  bool exclude = 1;
+  /* Human label for renderers. */
+  string label = 2;
+  /* Description. Empty => the value's leading comment. */
+  string description = 3;
+}
+
+extend google.protobuf.FileOptions {
+  /* Options for every schema generated from the file. */
+  FileOptions file = 60050;
+}
+
+extend google.protobuf.MessageOptions {
+  /* Schema options of the message. */
+  MessageOptions message = 60050;
+}
+
+extend google.protobuf.OneofOptions {
+  /* Options of the oneof. */
+  OneofOptions oneof = 60050;
+}
+
+extend google.protobuf.EnumValueOptions {
+  /* Choice-option settings of the enum value. */
+  EnumValueOptions enum_value = 60050;
+}

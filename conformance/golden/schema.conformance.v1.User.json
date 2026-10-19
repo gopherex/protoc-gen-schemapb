@@ -1,0 +1,300 @@
+{
+  "defs": {
+    "conformance.v1.Address": {
+      "description": "A postal address.",
+      "fields": [
+        {
+          "name": "city",
+          "string": {
+            "minLen": "1"
+          }
+        },
+        {
+          "name": "zip",
+          "string": {
+            "pattern": "^[0-9]{5}$"
+          }
+        }
+      ],
+      "id": {
+        "name": "Address",
+        "namespace": "conformance.v1",
+        "version": "v1.0.0"
+      }
+    },
+    "conformance.v1.Node": {
+      "description": "A node of a tree, to exercise recursion.",
+      "fields": [
+        {
+          "name": "name",
+          "string": {
+            "minLen": "1"
+          }
+        },
+        {
+          "list": {
+            "items": [
+              {
+                "name": "item",
+                "ref": {
+                  "name": "conformance.v1.Node"
+                }
+              }
+            ],
+            "maxItems": "2"
+          },
+          "name": "children"
+        }
+      ],
+      "id": {
+        "name": "Node",
+        "namespace": "conformance.v1",
+        "version": "v1.0.0"
+      }
+    },
+    "conformance.v1.User.Settings": {
+      "description": "Per-user settings, nested to exercise nested naming.",
+      "fields": [
+        {
+          "name": "locale",
+          "string": {
+            "in": [
+              "en",
+              "ru"
+            ]
+          }
+        }
+      ],
+      "id": {
+        "name": "User.Settings",
+        "namespace": "conformance.v1",
+        "version": "v1.0.0"
+      }
+    }
+  },
+  "description": "A user account: the kitchen sink of the mapping.",
+  "fields": [
+    {
+      "description": "Display name.",
+      "name": "name",
+      "string": {
+        "maxLen": "32",
+        "minLen": "2"
+      }
+    },
+    {
+      "int32": {
+        "gte": 0,
+        "lte": 150
+      },
+      "name": "age"
+    },
+    {
+      "name": "email",
+      "required": true,
+      "string": {
+        "format": "email"
+      }
+    },
+    {
+      "choice": {
+        "options": [
+          {
+            "description": "Free tier.",
+            "label": "Free",
+            "value": {
+              "stringValue": "TIER_FREE"
+            }
+          },
+          {
+            "label": "Gold",
+            "value": {
+              "stringValue": "TIER_GOLD"
+            }
+          },
+          {
+            "deprecated": true,
+            "value": {
+              "stringValue": "TIER_LEGACY"
+            }
+          }
+        ]
+      },
+      "name": "tier"
+    },
+    {
+      "list": {
+        "items": [
+          {
+            "name": "item",
+            "string": {
+              "minLen": "1"
+            }
+          }
+        ],
+        "maxItems": "3",
+        "unique": true
+      },
+      "name": "tags"
+    },
+    {
+      "map": {
+        "maxEntries": "2",
+        "valueField": {
+          "int64": {
+            "gt": "0"
+          },
+          "name": "value"
+        }
+      },
+      "name": "quotas"
+    },
+    {
+      "name": "address",
+      "ref": {
+        "name": "conformance.v1.Address"
+      },
+      "required": true
+    },
+    {
+      "list": {
+        "items": [
+          {
+            "name": "item",
+            "ref": {
+              "name": "conformance.v1.Address"
+            }
+          }
+        ]
+      },
+      "name": "previous"
+    },
+    {
+      "map": {
+        "valueField": {
+          "name": "value",
+          "ref": {
+            "name": "conformance.v1.Address"
+          }
+        }
+      },
+      "name": "offices"
+    },
+    {
+      "name": "created_at",
+      "timestamp": {
+        "gt": "1970-01-01T00:00:00Z"
+      }
+    },
+    {
+      "duration": {
+        "lte": "3600s"
+      },
+      "name": "session"
+    },
+    {
+      "name": "limit",
+      "uint32": {
+        "lte": 100
+      }
+    },
+    {
+      "json": {},
+      "name": "meta"
+    },
+    {
+      "name": "password",
+      "secret": true,
+      "string": {
+        "minLen": "8"
+      }
+    },
+    {
+      "description": "Only checked for gold users.",
+      "name": "coupon",
+      "string": {
+        "len": "6"
+      },
+      "when": "root.tier == 'TIER_GOLD'"
+    },
+    {
+      "name": "phone",
+      "string": {
+        "pattern": "^\\+[0-9]+$"
+      }
+    },
+    {
+      "name": "telegram",
+      "string": {}
+    },
+    {
+      "name": "tree",
+      "ref": {
+        "name": "conformance.v1.Node"
+      }
+    },
+    {
+      "bytes": {
+        "maxLen": "4"
+      },
+      "name": "avatar"
+    },
+    {
+      "double": {
+        "gte": 0,
+        "lt": 1
+      },
+      "name": "score"
+    },
+    {
+      "name": "credits",
+      "uint64": {}
+    },
+    {
+      "name": "settings",
+      "ref": {
+        "name": "conformance.v1.User.Settings"
+      }
+    },
+    {
+      "choice": {
+        "options": [
+          {
+            "value": {
+              "stringValue": "basic"
+            }
+          },
+          {
+            "value": {
+              "stringValue": "pro"
+            }
+          }
+        ]
+      },
+      "name": "plan"
+    }
+  ],
+  "id": {
+    "name": "User",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  },
+  "rules": [
+    {
+      "expr": "this.tier != 'TIER_GOLD' || this.age \u003e= 18",
+      "id": "adult-gold",
+      "message": "gold users must be adults"
+    },
+    {
+      "expr": "size(this.name) \u003c 20",
+      "id": "short-name",
+      "message": "long name",
+      "severity": "SEVERITY_WARNING"
+    },
+    {
+      "expr": "has(this.phone) || has(this.telegram)",
+      "id": "oneof:contact",
+      "message": "one of phone, telegram is required"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "errors": [
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "city",
+      "pathSegments": [
+        {
+          "fieldNumber": 1,
+          "key": "city"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "1234x"
+      },
+      "code": "ERROR_CODE_PATTERN_MISMATCH",
+      "constraint": "pattern",
+      "expected": {
+        "stringValue": "^[0-9]{5}$"
+      },
+      "message": "must match pattern ^[0-9]{5}$",
+      "path": "zip",
+      "pathSegments": [
+        {
+          "fieldNumber": 2,
+          "key": "zip"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Address",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "description": "A postal address.",
+  "fields": [
+    {
+      "name": "city",
+      "string": {
+        "minLen": "1"
+      }
+    },
+    {
+      "name": "zip",
+      "string": {
+        "pattern": "^[0-9]{5}$"
+      }
+    }
+  ],
+  "id": {
+    "name": "Address",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  }
+}

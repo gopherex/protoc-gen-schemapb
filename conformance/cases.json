@@ -1,0 +1,197 @@
+[
+  {
+    "name": "user_valid",
+    "message": "conformance.v1.User",
+    "input": {
+      "name": "Ada",
+      "age": 36,
+      "email": "ada@example.com",
+      "tier": "TIER_GOLD",
+      "tags": [
+        "math",
+        "engines"
+      ],
+      "quotas": {
+        "cpu": "4"
+      },
+      "address": {
+        "city": "London",
+        "zip": "12345"
+      },
+      "previous": [
+        {
+          "city": "Paris",
+          "zip": "75001"
+        }
+      ],
+      "offices": {
+        "hq": {
+          "city": "Berlin",
+          "zip": "10115"
+        }
+      },
+      "createdAt": "2020-01-01T00:00:00Z",
+      "session": "60s",
+      "limit": 10,
+      "meta": {
+        "team": "core",
+        "level": 2
+      },
+      "password": "correct-horse",
+      "coupon": "ABC123",
+      "phone": "+4420",
+      "tree": {
+        "name": "root",
+        "children": [
+          {
+            "name": "a"
+          }
+        ]
+      },
+      "avatar": "AQI=",
+      "score": 0.5,
+      "credits": "7",
+      "plan": "pro",
+      "settings": {
+        "locale": "ru"
+      }
+    }
+  },
+  {
+    "name": "user_empty",
+    "message": "conformance.v1.User",
+    "input": {}
+  },
+  {
+    "name": "user_invalid",
+    "message": "conformance.v1.User",
+    "input": {
+      "name": "A",
+      "age": 200,
+      "email": "nope",
+      "tier": "TIER_UNSPECIFIED",
+      "tags": [
+        "x",
+        "x",
+        "",
+        "y"
+      ],
+      "quotas": {
+        "a": "0",
+        "b": "1",
+        "c": "2"
+      },
+      "address": {
+        "city": "",
+        "zip": "12"
+      },
+      "previous": [
+        {
+          "city": "Rome",
+          "zip": "abc"
+        }
+      ],
+      "offices": {
+        "bad key": {
+          "city": "",
+          "zip": "00000"
+        }
+      },
+      "createdAt": "1970-01-01T00:00:00Z",
+      "session": "7200s",
+      "limit": 101,
+      "password": "short",
+      "coupon": "ignored-for-free-tier",
+      "telegram": "@ada",
+      "tree": {
+        "name": "",
+        "children": [
+          {
+            "name": "a"
+          },
+          {
+            "name": "b"
+          },
+          {
+            "name": "c",
+            "children": [
+              {
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      "avatar": "AQIDBAU=",
+      "score": 1,
+      "plan": "enterprise",
+      "settings": {
+        "locale": "de"
+      }
+    }
+  },
+  {
+    "name": "user_gold_minor",
+    "message": "conformance.v1.User",
+    "input": {
+      "name": "A very long display name",
+      "age": 10,
+      "email": "kid@example.com",
+      "tier": "TIER_GOLD",
+      "address": {
+        "city": "Oslo",
+        "zip": "01500"
+      },
+      "password": "12345678",
+      "coupon": "SHORT",
+      "phone": "+47",
+      "plan": "basic"
+    }
+  },
+  {
+    "name": "user_unknown_enum",
+    "message": "conformance.v1.User",
+    "input": {
+      "name": "Bob",
+      "email": "bob@example.com",
+      "tier": 9,
+      "address": {
+        "city": "Kyiv",
+        "zip": "01001"
+      },
+      "password": "12345678",
+      "phone": "+380",
+      "plan": "basic"
+    }
+  },
+  {
+    "name": "node_deep",
+    "message": "conformance.v1.Node",
+    "input": {
+      "name": "r",
+      "children": [
+        {
+          "name": "a",
+          "children": [
+            {
+              "name": ""
+            },
+            {
+              "name": "b"
+            },
+            {
+              "name": "c"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "address_bad",
+    "message": "conformance.v1.Address",
+    "input": {
+      "zip": "1234x"
+    }
+  }
+]

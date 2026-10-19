@@ -1,0 +1,19 @@
+{
+  "description": "Per-user settings, nested to exercise nested naming.",
+  "fields": [
+    {
+      "name": "locale",
+      "string": {
+        "in": [
+          "en",
+          "ru"
+        ]
+      }
+    }
+  ],
+  "id": {
+    "name": "User.Settings",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  }
+}

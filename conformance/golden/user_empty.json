@@ -1,0 +1,142 @@
+{
+  "errors": [
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "2"
+      },
+      "message": "length must be at least 2",
+      "path": "name",
+      "pathSegments": [
+        {
+          "fieldNumber": 1,
+          "key": "name"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_REQUIRED_MISSING",
+      "constraint": "required",
+      "message": "required",
+      "path": "email",
+      "pathSegments": [
+        {
+          "fieldNumber": 3,
+          "key": "email"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "TIER_UNSPECIFIED"
+      },
+      "code": "ERROR_CODE_CHOICE_NOT_ALLOWED",
+      "constraint": "options",
+      "expected": {
+        "listValue": {
+          "items": [
+            {
+              "stringValue": "TIER_FREE"
+            },
+            {
+              "stringValue": "TIER_GOLD"
+            },
+            {
+              "stringValue": "TIER_LEGACY"
+            }
+          ]
+        }
+      },
+      "message": "must be one of [\"TIER_FREE\",\"TIER_GOLD\",\"TIER_LEGACY\"]",
+      "path": "tier",
+      "pathSegments": [
+        {
+          "fieldNumber": 4,
+          "key": "tier"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_REQUIRED_MISSING",
+      "constraint": "required",
+      "message": "required",
+      "path": "address",
+      "pathSegments": [
+        {
+          "fieldNumber": 7,
+          "key": "address"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "8"
+      },
+      "message": "length must be at least 8",
+      "path": "password",
+      "pathSegments": [
+        {
+          "fieldNumber": 14,
+          "key": "password"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_CHOICE_NOT_ALLOWED",
+      "constraint": "options",
+      "expected": {
+        "listValue": {
+          "items": [
+            {
+              "stringValue": "basic"
+            },
+            {
+              "stringValue": "pro"
+            }
+          ]
+        }
+      },
+      "message": "must be one of [\"basic\",\"pro\"]",
+      "path": "plan",
+      "pathSegments": [
+        {
+          "fieldNumber": 22,
+          "key": "plan"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_RULE_VIOLATED",
+      "expr": "has(this.phone) || has(this.telegram)",
+      "message": "one of phone, telegram is required",
+      "path": "oneof:contact",
+      "pathSegments": [
+        {
+          "key": "oneof:contact"
+        }
+      ],
+      "ruleId": "oneof:contact",
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "User",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  }
+}

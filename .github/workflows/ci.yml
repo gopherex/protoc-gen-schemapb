@@ -1,0 +1,51 @@
+# Generated code is committed. CI lints, runs the Go tests and the Go and
+# TypeScript conformance against the released schemapb (Go module, easyp
+# dep, @gopherex/schemapb on GitHub Packages).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+
+env:
+  EASYP_VERSION: v0.16.6
+  GOLANGCI_LINT_VERSION: v2.6.2
+
+jobs:
+  go:
+    name: go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Install tools
+        run: |
+          GOBIN="$PWD/bin" go install "github.com/easyp-tech/easyp/cmd/easyp@${EASYP_VERSION}"
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh \
+            | sh -s -- -b "$PWD/bin" "$GOLANGCI_LINT_VERSION"
+      - run: ./bin/easyp mod download && ./bin/easyp lint -p schemapb
+      - run: go build ./...
+      - run: ./bin/golangci-lint run ./...
+      - run: go test ./...
+
+  ts:
+    name: typescript conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: corepack enable
+      - working-directory: conformance/ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn install --immutable && yarn typecheck && yarn test

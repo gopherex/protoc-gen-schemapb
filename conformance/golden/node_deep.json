@@ -1,0 +1,68 @@
+{
+  "errors": [
+    {
+      "actual": {
+        "uint64Value": "3"
+      },
+      "code": "ERROR_CODE_MAX_ITEMS_VIOLATED",
+      "constraint": "max_items",
+      "expected": {
+        "uint64Value": "2"
+      },
+      "message": "must have at most 2 items",
+      "path": "children[0].children",
+      "pathSegments": [
+        {
+          "fieldNumber": 2,
+          "key": "children"
+        },
+        {
+          "index": "0"
+        },
+        {
+          "fieldNumber": 2,
+          "key": "children"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "children[0].children[0].name",
+      "pathSegments": [
+        {
+          "fieldNumber": 2,
+          "key": "children"
+        },
+        {
+          "index": "0"
+        },
+        {
+          "fieldNumber": 2,
+          "key": "children"
+        },
+        {
+          "index": "0"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "name"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Node",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  }
+}

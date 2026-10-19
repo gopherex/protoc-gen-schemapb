@@ -1,0 +1,550 @@
+{
+  "errors": [
+    {
+      "actual": {
+        "stringValue": "A"
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "2"
+      },
+      "message": "length must be at least 2",
+      "path": "name",
+      "pathSegments": [
+        {
+          "fieldNumber": 1,
+          "key": "name"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "int64Value": "200"
+      },
+      "code": "ERROR_CODE_LTE_VIOLATED",
+      "constraint": "lte",
+      "expected": {
+        "int64Value": "150"
+      },
+      "message": "must be \u003c= 150",
+      "path": "age",
+      "pathSegments": [
+        {
+          "fieldNumber": 2,
+          "key": "age"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "nope"
+      },
+      "code": "ERROR_CODE_FORMAT_MISMATCH",
+      "constraint": "format",
+      "expected": {
+        "stringValue": "email"
+      },
+      "message": "must be a valid email",
+      "path": "email",
+      "pathSegments": [
+        {
+          "fieldNumber": 3,
+          "key": "email"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "TIER_UNSPECIFIED"
+      },
+      "code": "ERROR_CODE_CHOICE_NOT_ALLOWED",
+      "constraint": "options",
+      "expected": {
+        "listValue": {
+          "items": [
+            {
+              "stringValue": "TIER_FREE"
+            },
+            {
+              "stringValue": "TIER_GOLD"
+            },
+            {
+              "stringValue": "TIER_LEGACY"
+            }
+          ]
+        }
+      },
+      "message": "must be one of [\"TIER_FREE\",\"TIER_GOLD\",\"TIER_LEGACY\"]",
+      "path": "tier",
+      "pathSegments": [
+        {
+          "fieldNumber": 4,
+          "key": "tier"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "uint64Value": "4"
+      },
+      "code": "ERROR_CODE_MAX_ITEMS_VIOLATED",
+      "constraint": "max_items",
+      "expected": {
+        "uint64Value": "3"
+      },
+      "message": "must have at most 3 items",
+      "path": "tags",
+      "pathSegments": [
+        {
+          "fieldNumber": 5,
+          "key": "tags"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "x"
+      },
+      "code": "ERROR_CODE_NOT_UNIQUE",
+      "constraint": "unique",
+      "message": "must be unique",
+      "path": "tags[1]",
+      "pathSegments": [
+        {
+          "fieldNumber": 5,
+          "key": "tags"
+        },
+        {
+          "index": "1"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "tags[2]",
+      "pathSegments": [
+        {
+          "fieldNumber": 5,
+          "key": "tags"
+        },
+        {
+          "index": "2"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "uint64Value": "3"
+      },
+      "code": "ERROR_CODE_MAX_ENTRIES_VIOLATED",
+      "constraint": "max_entries",
+      "expected": {
+        "uint64Value": "2"
+      },
+      "message": "must have at most 2 entries",
+      "path": "quotas",
+      "pathSegments": [
+        {
+          "fieldNumber": 6,
+          "key": "quotas"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "int64Value": "0"
+      },
+      "code": "ERROR_CODE_GT_VIOLATED",
+      "constraint": "gt",
+      "expected": {
+        "int64Value": "0"
+      },
+      "message": "must be \u003e 0",
+      "path": "quotas.a",
+      "pathSegments": [
+        {
+          "fieldNumber": 6,
+          "key": "quotas"
+        },
+        {
+          "key": "a"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "address.city",
+      "pathSegments": [
+        {
+          "fieldNumber": 7,
+          "key": "address"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "city"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "12"
+      },
+      "code": "ERROR_CODE_PATTERN_MISMATCH",
+      "constraint": "pattern",
+      "expected": {
+        "stringValue": "^[0-9]{5}$"
+      },
+      "message": "must match pattern ^[0-9]{5}$",
+      "path": "address.zip",
+      "pathSegments": [
+        {
+          "fieldNumber": 7,
+          "key": "address"
+        },
+        {
+          "fieldNumber": 2,
+          "key": "zip"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "abc"
+      },
+      "code": "ERROR_CODE_PATTERN_MISMATCH",
+      "constraint": "pattern",
+      "expected": {
+        "stringValue": "^[0-9]{5}$"
+      },
+      "message": "must match pattern ^[0-9]{5}$",
+      "path": "previous[0].zip",
+      "pathSegments": [
+        {
+          "fieldNumber": 8,
+          "key": "previous"
+        },
+        {
+          "index": "0"
+        },
+        {
+          "fieldNumber": 2,
+          "key": "zip"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "offices.bad key.city",
+      "pathSegments": [
+        {
+          "fieldNumber": 9,
+          "key": "offices"
+        },
+        {
+          "key": "bad key"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "city"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "timestampValue": "1970-01-01T00:00:00Z"
+      },
+      "code": "ERROR_CODE_GT_VIOLATED",
+      "constraint": "gt",
+      "expected": {
+        "timestampValue": "1970-01-01T00:00:00Z"
+      },
+      "message": "must be \u003e 1970-01-01T00:00:00Z",
+      "path": "created_at",
+      "pathSegments": [
+        {
+          "fieldNumber": 10,
+          "key": "created_at"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "durationValue": "7200s"
+      },
+      "code": "ERROR_CODE_LTE_VIOLATED",
+      "constraint": "lte",
+      "expected": {
+        "durationValue": "3600s"
+      },
+      "message": "must be \u003c= 1h0m0s",
+      "path": "session",
+      "pathSegments": [
+        {
+          "fieldNumber": 11,
+          "key": "session"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "uint64Value": "101"
+      },
+      "code": "ERROR_CODE_LTE_VIOLATED",
+      "constraint": "lte",
+      "expected": {
+        "uint64Value": "100"
+      },
+      "message": "must be \u003c= 100",
+      "path": "limit",
+      "pathSegments": [
+        {
+          "fieldNumber": 12,
+          "key": "limit"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "8"
+      },
+      "message": "length must be at least 8",
+      "path": "password",
+      "pathSegments": [
+        {
+          "fieldNumber": 14,
+          "key": "password"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "tree.name",
+      "pathSegments": [
+        {
+          "fieldNumber": 18,
+          "key": "tree"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "name"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "uint64Value": "3"
+      },
+      "code": "ERROR_CODE_MAX_ITEMS_VIOLATED",
+      "constraint": "max_items",
+      "expected": {
+        "uint64Value": "2"
+      },
+      "message": "must have at most 2 items",
+      "path": "tree.children",
+      "pathSegments": [
+        {
+          "fieldNumber": 18,
+          "key": "tree"
+        },
+        {
+          "fieldNumber": 2,
+          "key": "children"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "tree.children[2].children[0].name",
+      "pathSegments": [
+        {
+          "fieldNumber": 18,
+          "key": "tree"
+        },
+        {
+          "fieldNumber": 2,
+          "key": "children"
+        },
+        {
+          "index": "2"
+        },
+        {
+          "fieldNumber": 2,
+          "key": "children"
+        },
+        {
+          "index": "0"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "name"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "bytesValue": "AQIDBAU="
+      },
+      "code": "ERROR_CODE_MAX_LEN_VIOLATED",
+      "constraint": "max_len",
+      "expected": {
+        "uint64Value": "4"
+      },
+      "message": "length must be at most 4",
+      "path": "avatar",
+      "pathSegments": [
+        {
+          "fieldNumber": 19,
+          "key": "avatar"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "doubleValue": 1
+      },
+      "code": "ERROR_CODE_LT_VIOLATED",
+      "constraint": "lt",
+      "expected": {
+        "doubleValue": 1
+      },
+      "message": "must be \u003c 1",
+      "path": "score",
+      "pathSegments": [
+        {
+          "fieldNumber": 20,
+          "key": "score"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "de"
+      },
+      "code": "ERROR_CODE_NOT_IN_ALLOWED_SET",
+      "constraint": "in",
+      "expected": {
+        "listValue": {
+          "items": [
+            {
+              "stringValue": "en"
+            },
+            {
+              "stringValue": "ru"
+            }
+          ]
+        }
+      },
+      "message": "must be one of [\"en\",\"ru\"]",
+      "path": "settings.locale",
+      "pathSegments": [
+        {
+          "fieldNumber": 23,
+          "key": "settings"
+        },
+        {
+          "fieldNumber": 1,
+          "key": "locale"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "actual": {
+        "stringValue": "enterprise"
+      },
+      "code": "ERROR_CODE_CHOICE_NOT_ALLOWED",
+      "constraint": "options",
+      "expected": {
+        "listValue": {
+          "items": [
+            {
+              "stringValue": "basic"
+            },
+            {
+              "stringValue": "pro"
+            }
+          ]
+        }
+      },
+      "message": "must be one of [\"basic\",\"pro\"]",
+      "path": "plan",
+      "pathSegments": [
+        {
+          "fieldNumber": 22,
+          "key": "plan"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "User",
+    "namespace": "conformance.v1",
+    "version": "v1.0.0"
+  }
+}
