@@ -6,22 +6,29 @@ package editionv1
 import (
 	protomsg "github.com/gopherex/schemapb/go/protomsg"
 	schemapb "github.com/gopherex/schemapb/go/schemapb"
+	sync "sync"
 )
 
 // Compile-time assertion that this code is compatible with the runtime.
 const _ = protomsg.SupportPackageIsVersion1
 
-var _Doc_schemapb = protomsg.New("\n\x1d\n\x16conformance.edition.v1\x12\x03Doc\x12;Editions presen" +
-	"ce: explicit by default, implicit per field.\x1a\r\n\x05" +
-	"title \x01j\x02 \x01\x1a\v\n\x05countB\x02 \x01")
+var _Doc_schemapb = sync.OnceValue(func() *protomsg.Validator {
+	return protomsg.New("\n\x1d\n\x16conformance.edition.v1\x12\x03Doc\x12;Editions presen" +
+		"ce: explicit by default, implicit per field.\x1a\r\n\x05" +
+		"title \x01j\x02 \x01\x1a\v\n\x05countB\x02 \x01")
+})
 
 // Validate validates x against its schemapb schema. It returns nil when
 // nothing blocks (warnings alone do not), the *schemapb.ValidationResult
 // otherwise, or a programmatic error.
-func (x *Doc) Validate() error { return _Doc_schemapb.Validate(x) }
+func (x *Doc) Validate() error { return _Doc_schemapb().Validate(x) }
 
 // ValidateResult validates x and returns every failure, warnings included.
-func (x *Doc) ValidateResult() (*schemapb.ValidationResult, error) { return _Doc_schemapb.Check(x) }
+func (x *Doc) ValidateResult() (*schemapb.ValidationResult, error) { return _Doc_schemapb().Check(x) }
+
+// Resolve validates x and, when nothing blocks, writes the resolved values
+// (defaults, normalize, computed) back into it; x is untouched otherwise.
+func (x *Doc) Resolve() (*schemapb.ValidationResult, error) { return _Doc_schemapb().Resolve(x) }
 
 // SchemaPB returns the schemapb schema of Doc.
-func (*Doc) SchemaPB() *schemapb.Schema { return _Doc_schemapb.Schema() }
+func (*Doc) SchemaPB() *schemapb.Schema { return _Doc_schemapb().Schema() }

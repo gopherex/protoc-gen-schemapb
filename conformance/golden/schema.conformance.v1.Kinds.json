@@ -118,6 +118,10 @@
     },
     {
       "map": {
+        "keyField": {
+          "int32": {},
+          "name": "key"
+        },
         "valueField": {
           "name": "value",
           "string": {
@@ -129,6 +133,10 @@
     },
     {
       "map": {
+        "keyField": {
+          "bool": {},
+          "name": "key"
+        },
         "valueField": {
           "name": "value",
           "ref": {

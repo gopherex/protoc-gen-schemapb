@@ -172,6 +172,57 @@ func (x *MessageOptions) GetDescription() string {
 	return ""
 }
 
+// AnyOptions list the message types a google.protobuf.Any field may hold.
+// The field validates as a union on "@type" ("type.googleapis.com/<full
+// name>"): the packed message is unpacked and checked against its own
+// schema; any other type is ERROR_CODE_UNKNOWN_VARIANT. Without types the
+// field is json and only its "@type" is seen. Every listed type must be
+// visible to the file (imported).
+type AnyOptions struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Full names of the allowed message types, e.g. "acme.v1.Card".
+	Types         []string `protobuf:"bytes,1,rep,name=types,proto3" json:"types,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnyOptions) Reset() {
+	*x = AnyOptions{}
+	mi := &file_schemapb_options_v1_options_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnyOptions) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnyOptions) ProtoMessage() {}
+
+func (x *AnyOptions) ProtoReflect() protoreflect.Message {
+	mi := &file_schemapb_options_v1_options_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnyOptions.ProtoReflect.Descriptor instead.
+func (*AnyOptions) Descriptor() ([]byte, []int) {
+	return file_schemapb_options_v1_options_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AnyOptions) GetTypes() []string {
+	if x != nil {
+		return x.Types
+	}
+	return nil
+}
+
 // OneofOptions configure a (non-synthetic) oneof.
 type OneofOptions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -184,7 +235,7 @@ type OneofOptions struct {
 
 func (x *OneofOptions) Reset() {
 	*x = OneofOptions{}
-	mi := &file_schemapb_options_v1_options_proto_msgTypes[2]
+	mi := &file_schemapb_options_v1_options_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -196,7 +247,7 @@ func (x *OneofOptions) String() string {
 func (*OneofOptions) ProtoMessage() {}
 
 func (x *OneofOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_schemapb_options_v1_options_proto_msgTypes[2]
+	mi := &file_schemapb_options_v1_options_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -209,7 +260,7 @@ func (x *OneofOptions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OneofOptions.ProtoReflect.Descriptor instead.
 func (*OneofOptions) Descriptor() ([]byte, []int) {
-	return file_schemapb_options_v1_options_proto_rawDescGZIP(), []int{2}
+	return file_schemapb_options_v1_options_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *OneofOptions) GetRequired() bool {
@@ -235,7 +286,7 @@ type EnumValueOptions struct {
 
 func (x *EnumValueOptions) Reset() {
 	*x = EnumValueOptions{}
-	mi := &file_schemapb_options_v1_options_proto_msgTypes[3]
+	mi := &file_schemapb_options_v1_options_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -247,7 +298,7 @@ func (x *EnumValueOptions) String() string {
 func (*EnumValueOptions) ProtoMessage() {}
 
 func (x *EnumValueOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_schemapb_options_v1_options_proto_msgTypes[3]
+	mi := &file_schemapb_options_v1_options_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -260,7 +311,7 @@ func (x *EnumValueOptions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnumValueOptions.ProtoReflect.Descriptor instead.
 func (*EnumValueOptions) Descriptor() ([]byte, []int) {
-	return file_schemapb_options_v1_options_proto_rawDescGZIP(), []int{3}
+	return file_schemapb_options_v1_options_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *EnumValueOptions) GetExclude() bool {
@@ -291,6 +342,14 @@ var file_schemapb_options_v1_options_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         60050,
 		Name:          "schemapb.options.v1.field",
 		Tag:           "bytes,60050,opt,name=field",
+		Filename:      "schemapb/options/v1/options.proto",
+	},
+	{
+		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
+		ExtensionType: (*AnyOptions)(nil),
+		Field:         60051,
+		Name:          "schemapb.options.v1.any",
+		Tag:           "bytes,60051,opt,name=any",
 		Filename:      "schemapb/options/v1/options.proto",
 	},
 	{
@@ -332,34 +391,37 @@ var (
 	// Schema of the field.
 	// optional schemapb.Schema.Field field = 60050;
 	E_Field = &file_schemapb_options_v1_options_proto_extTypes[0]
+	// Allowed types of an Any field.
+	// optional schemapb.options.v1.AnyOptions any = 60051;
+	E_Any = &file_schemapb_options_v1_options_proto_extTypes[1]
 )
 
 // Extension fields to descriptorpb.FileOptions.
 var (
 	// Options for every schema generated from the file.
 	// optional schemapb.options.v1.FileOptions file = 60050;
-	E_File = &file_schemapb_options_v1_options_proto_extTypes[1]
+	E_File = &file_schemapb_options_v1_options_proto_extTypes[2]
 )
 
 // Extension fields to descriptorpb.MessageOptions.
 var (
 	// Schema options of the message.
 	// optional schemapb.options.v1.MessageOptions message = 60050;
-	E_Message = &file_schemapb_options_v1_options_proto_extTypes[2]
+	E_Message = &file_schemapb_options_v1_options_proto_extTypes[3]
 )
 
 // Extension fields to descriptorpb.OneofOptions.
 var (
 	// Options of the oneof.
 	// optional schemapb.options.v1.OneofOptions oneof = 60050;
-	E_Oneof = &file_schemapb_options_v1_options_proto_extTypes[3]
+	E_Oneof = &file_schemapb_options_v1_options_proto_extTypes[4]
 )
 
 // Extension fields to descriptorpb.EnumValueOptions.
 var (
 	// Choice-option settings of the enum value.
 	// optional schemapb.options.v1.EnumValueOptions enum_value = 60050;
-	E_EnumValue = &file_schemapb_options_v1_options_proto_extTypes[4]
+	E_EnumValue = &file_schemapb_options_v1_options_proto_extTypes[5]
 )
 
 var File_schemapb_options_v1_options_proto protoreflect.FileDescriptor
@@ -384,14 +446,18 @@ const file_schemapb_options_v1_options_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x11\n" +
 	"\x0f_min_propertiesB\x11\n" +
 	"\x0f_max_propertiesB\x0e\n" +
-	"\f_description\"*\n" +
+	"\f_description\"\"\n" +
+	"\n" +
+	"AnyOptions\x12\x14\n" +
+	"\x05types\x18\x01 \x03(\tR\x05types\"*\n" +
 	"\fOneofOptions\x12\x1a\n" +
 	"\brequired\x18\x01 \x01(\bR\brequired\"d\n" +
 	"\x10EnumValueOptions\x12\x18\n" +
 	"\aexclude\x18\x01 \x01(\bR\aexclude\x12\x14\n" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription:M\n" +
-	"\x05field\x12\x1d.google.protobuf.FieldOptions\x18\x92\xd5\x03 \x01(\v2\x16.schemapb.Schema.FieldR\x05field:T\n" +
+	"\x05field\x12\x1d.google.protobuf.FieldOptions\x18\x92\xd5\x03 \x01(\v2\x16.schemapb.Schema.FieldR\x05field:R\n" +
+	"\x03any\x12\x1d.google.protobuf.FieldOptions\x18\x93\xd5\x03 \x01(\v2\x1f.schemapb.options.v1.AnyOptionsR\x03any:T\n" +
 	"\x04file\x12\x1c.google.protobuf.FileOptions\x18\x92\xd5\x03 \x01(\v2 .schemapb.options.v1.FileOptionsR\x04file:`\n" +
 	"\amessage\x12\x1f.google.protobuf.MessageOptions\x18\x92\xd5\x03 \x01(\v2#.schemapb.options.v1.MessageOptionsR\amessage:X\n" +
 	"\x05oneof\x12\x1d.google.protobuf.OneofOptions\x18\x92\xd5\x03 \x01(\v2!.schemapb.options.v1.OneofOptionsR\x05oneof:i\n" +
@@ -410,38 +476,41 @@ func file_schemapb_options_v1_options_proto_rawDescGZIP() []byte {
 	return file_schemapb_options_v1_options_proto_rawDescData
 }
 
-var file_schemapb_options_v1_options_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_schemapb_options_v1_options_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_schemapb_options_v1_options_proto_goTypes = []any{
 	(*FileOptions)(nil),                   // 0: schemapb.options.v1.FileOptions
 	(*MessageOptions)(nil),                // 1: schemapb.options.v1.MessageOptions
-	(*OneofOptions)(nil),                  // 2: schemapb.options.v1.OneofOptions
-	(*EnumValueOptions)(nil),              // 3: schemapb.options.v1.EnumValueOptions
-	nil,                                   // 4: schemapb.options.v1.MessageOptions.TemplatesEntry
-	(*schemapb.Schema_Field_Rule)(nil),    // 5: schemapb.Schema.Field.Rule
-	(*descriptorpb.FieldOptions)(nil),     // 6: google.protobuf.FieldOptions
-	(*descriptorpb.FileOptions)(nil),      // 7: google.protobuf.FileOptions
-	(*descriptorpb.MessageOptions)(nil),   // 8: google.protobuf.MessageOptions
-	(*descriptorpb.OneofOptions)(nil),     // 9: google.protobuf.OneofOptions
-	(*descriptorpb.EnumValueOptions)(nil), // 10: google.protobuf.EnumValueOptions
-	(*schemapb.Schema_Field)(nil),         // 11: schemapb.Schema.Field
+	(*AnyOptions)(nil),                    // 2: schemapb.options.v1.AnyOptions
+	(*OneofOptions)(nil),                  // 3: schemapb.options.v1.OneofOptions
+	(*EnumValueOptions)(nil),              // 4: schemapb.options.v1.EnumValueOptions
+	nil,                                   // 5: schemapb.options.v1.MessageOptions.TemplatesEntry
+	(*schemapb.Schema_Field_Rule)(nil),    // 6: schemapb.Schema.Field.Rule
+	(*descriptorpb.FieldOptions)(nil),     // 7: google.protobuf.FieldOptions
+	(*descriptorpb.FileOptions)(nil),      // 8: google.protobuf.FileOptions
+	(*descriptorpb.MessageOptions)(nil),   // 9: google.protobuf.MessageOptions
+	(*descriptorpb.OneofOptions)(nil),     // 10: google.protobuf.OneofOptions
+	(*descriptorpb.EnumValueOptions)(nil), // 11: google.protobuf.EnumValueOptions
+	(*schemapb.Schema_Field)(nil),         // 12: schemapb.Schema.Field
 }
 var file_schemapb_options_v1_options_proto_depIdxs = []int32{
-	5,  // 0: schemapb.options.v1.MessageOptions.rules:type_name -> schemapb.Schema.Field.Rule
-	4,  // 1: schemapb.options.v1.MessageOptions.templates:type_name -> schemapb.options.v1.MessageOptions.TemplatesEntry
-	6,  // 2: schemapb.options.v1.field:extendee -> google.protobuf.FieldOptions
-	7,  // 3: schemapb.options.v1.file:extendee -> google.protobuf.FileOptions
-	8,  // 4: schemapb.options.v1.message:extendee -> google.protobuf.MessageOptions
-	9,  // 5: schemapb.options.v1.oneof:extendee -> google.protobuf.OneofOptions
-	10, // 6: schemapb.options.v1.enum_value:extendee -> google.protobuf.EnumValueOptions
-	11, // 7: schemapb.options.v1.field:type_name -> schemapb.Schema.Field
-	0,  // 8: schemapb.options.v1.file:type_name -> schemapb.options.v1.FileOptions
-	1,  // 9: schemapb.options.v1.message:type_name -> schemapb.options.v1.MessageOptions
-	2,  // 10: schemapb.options.v1.oneof:type_name -> schemapb.options.v1.OneofOptions
-	3,  // 11: schemapb.options.v1.enum_value:type_name -> schemapb.options.v1.EnumValueOptions
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	7,  // [7:12] is the sub-list for extension type_name
-	2,  // [2:7] is the sub-list for extension extendee
+	6,  // 0: schemapb.options.v1.MessageOptions.rules:type_name -> schemapb.Schema.Field.Rule
+	5,  // 1: schemapb.options.v1.MessageOptions.templates:type_name -> schemapb.options.v1.MessageOptions.TemplatesEntry
+	7,  // 2: schemapb.options.v1.field:extendee -> google.protobuf.FieldOptions
+	7,  // 3: schemapb.options.v1.any:extendee -> google.protobuf.FieldOptions
+	8,  // 4: schemapb.options.v1.file:extendee -> google.protobuf.FileOptions
+	9,  // 5: schemapb.options.v1.message:extendee -> google.protobuf.MessageOptions
+	10, // 6: schemapb.options.v1.oneof:extendee -> google.protobuf.OneofOptions
+	11, // 7: schemapb.options.v1.enum_value:extendee -> google.protobuf.EnumValueOptions
+	12, // 8: schemapb.options.v1.field:type_name -> schemapb.Schema.Field
+	2,  // 9: schemapb.options.v1.any:type_name -> schemapb.options.v1.AnyOptions
+	0,  // 10: schemapb.options.v1.file:type_name -> schemapb.options.v1.FileOptions
+	1,  // 11: schemapb.options.v1.message:type_name -> schemapb.options.v1.MessageOptions
+	3,  // 12: schemapb.options.v1.oneof:type_name -> schemapb.options.v1.OneofOptions
+	4,  // 13: schemapb.options.v1.enum_value:type_name -> schemapb.options.v1.EnumValueOptions
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	8,  // [8:14] is the sub-list for extension type_name
+	2,  // [2:8] is the sub-list for extension extendee
 	0,  // [0:2] is the sub-list for field type_name
 }
 
@@ -458,8 +527,8 @@ func file_schemapb_options_v1_options_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_schemapb_options_v1_options_proto_rawDesc), len(file_schemapb_options_v1_options_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
-			NumExtensions: 5,
+			NumMessages:   6,
+			NumExtensions: 6,
 			NumServices:   0,
 		},
 		GoTypes:           file_schemapb_options_v1_options_proto_goTypes,

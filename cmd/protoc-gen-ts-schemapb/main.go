@@ -2,7 +2,8 @@
 // TypeScript messages produced by protoc-gen-es (protobuf-es v2).
 //
 // Parameters: import_extension=none|js|ts (as protoc-gen-es, default none),
-// runtime_module=<module> (default @gopherex/schemapb), target=ts.
+// runtime_module=<module> (default @gopherex/schemapb),
+// target=ts|js|dts or a + combination (as protoc-gen-es, default ts).
 package main
 
 import (

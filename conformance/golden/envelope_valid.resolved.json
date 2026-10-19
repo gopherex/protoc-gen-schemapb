@@ -1,0 +1,31 @@
+{
+  "byId": {
+    "7": "seven"
+  },
+  "items": [
+    {
+      "@type": "type.googleapis.com/conformance.other.v1.Ref",
+      "id": "abc"
+    }
+  ],
+  "opaque": {
+    "@type": "type.googleapis.com/conformance.other.v1.Ref",
+    "id": "x"
+  },
+  "payload": {
+    "@type": "type.googleapis.com/conformance.v1.Address",
+    "city": "Rome",
+    "zip": "00100"
+  },
+  "region": "eu",
+  "scores": {
+    "ann": 1
+  },
+  "slug": "hello-world",
+  "tagCount": 3,
+  "tags": [
+    "a",
+    "b",
+    "c"
+  ]
+}

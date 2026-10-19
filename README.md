@@ -42,9 +42,9 @@ generate:
       out: web/gen
 ```
 
-`protoc-gen-ts-schemapb` parameters: `import_extension=none|js|ts` (same as
-`protoc-gen-es`, default `none`), `runtime_module=<module>` (default
-`@gopherex/schemapb`).
+`protoc-gen-ts-schemapb` parameters, as `protoc-gen-es`: `target=ts|js|dts`
+or a `+` combination (default `ts`), `import_extension=none|js|ts` (default
+`none`); plus `runtime_module=<module>` (default `@gopherex/schemapb`).
 
 ## Write rules
 
@@ -67,6 +67,13 @@ message User {
   map<string, int64> quotas = 6 [(schemapb.options.v1.field).map = {value_field: {int64: {gt: 0}}}];
   string password = 7 [(schemapb.options.v1.field) = {secret: true, string: {min_len: 8}}];
   string coupon = 8 [(schemapb.options.v1.field) = {when: "root.tier == 'TIER_GOLD'", string: {len: 6}}];
+  map<string, int32> scores = 11 [(schemapb.options.v1.field).map = {
+    key_field: {string: {pattern: "^[a-z]+$"}}   // keys, in the key's kind
+    value_field: {int32: {gte: 0}}
+  }];
+  google.protobuf.Any payload = 12 [(schemapb.options.v1.any) = {types: ["acme.v1.Card"]}];
+  int32 tag_count = 13 [(schemapb.options.v1.field).computed = {expr: "size(root.tags)"}];
+  repeated string tags = 14;
   oneof contact {
     option (schemapb.options.v1.oneof).required = true;
     string phone = 9;
@@ -103,7 +110,13 @@ Full contract: [`schemapb/options/v1/options.proto`](schemapb/options/v1/options
 | wrappers | the wrapped kind | the scalar; absent when unset |
 | `Struct` `Value` `ListValue` | json | JSON value |
 | `Empty` / `FieldMask` | object / list of string | `{}` / paths |
-| `Any` | rejected at generation | |
+| `Any` with `(any).types` | union on `@type` over those types | `@type` + the packed message's fields |
+| `Any` without types | json | `@type` only |
+
+`Resolve` writes the resolved values (defaults, normalize, `computed`) back
+into the message only when nothing blocks, all or nothing; an `Any` of a
+listed type is unpacked, written and packed again, so what was validated is
+what is stored. A computed field's result type defaults to its proto type.
 
 Presence follows proto: implicit-presence fields are always present (their
 zero value is checked against the constraints); `optional`, message and
@@ -123,6 +136,7 @@ if err := user.Validate(); err != nil {          // nil when nothing blocks
 	return status.ErrorProto(st)                   // gRPC
 }
 res, err := user.ValidateResult()                  // every failure, warnings included
+res, err = user.Resolve()                          // validate, then write defaults/normalize/computed back
 schema := user.SchemaPB()                          // e.g. ship it to a form renderer
 ```
 
@@ -133,6 +147,7 @@ import { UserValidator } from "./gen/user_schemapb.js";
 
 const res = UserValidator.check(user);   // ValidationResult, warnings included
 UserValidator.validate(user);            // throws ValidationFailure when something blocks
+UserValidator.resolve(user);             // validate, then write defaults/normalize/computed back
 UserValidator.schema;                    // the embedded schemapb.Schema
 ```
 

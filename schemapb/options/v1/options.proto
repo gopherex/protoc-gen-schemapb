@@ -74,8 +74,12 @@ message MessageOptions {
  *     are the enum values; the option may set open/options_expr/default but
  *     not options. A repeated field takes list (its single item, if given,
  *     constrains the elements), a map field takes map (value_field, if
- *     given, constrains the values). A message field takes no kind;
- *   - computed is not allowed: a message field is input, not derived;
+ *     given, constrains the values; key_field, if given, the keys, in the
+ *     key's kind). A message field takes no kind; an Any field takes json
+ *     (see AnyOptions);
+ *   - computed is allowed on a scalar, enum or well-known scalar field:
+ *     validation checks the computed value, and Resolve writes it into the
+ *     message. Its result type defaults to the field's type;
  *   - required is allowed only where presence exists (optional, message,
  *     oneof member); an implicit-presence field is always present, use a
  *     constraint (min_len, gt, ...) instead;
@@ -85,6 +89,24 @@ message MessageOptions {
 extend google.protobuf.FieldOptions {
   /* Schema of the field. */
   schemapb.Schema.Field field = 60050;
+}
+
+/*
+ * AnyOptions list the message types a google.protobuf.Any field may hold.
+ * The field validates as a union on "@type" ("type.googleapis.com/<full
+ * name>"): the packed message is unpacked and checked against its own
+ * schema; any other type is ERROR_CODE_UNKNOWN_VARIANT. Without types the
+ * field is json and only its "@type" is seen. Every listed type must be
+ * visible to the file (imported).
+ */
+message AnyOptions {
+  /* Full names of the allowed message types, e.g. "acme.v1.Card". */
+  repeated string types = 1;
+}
+
+extend google.protobuf.FieldOptions {
+  /* Allowed types of an Any field. */
+  AnyOptions any = 60051;
 }
 
 /* OneofOptions configure a (non-synthetic) oneof. */

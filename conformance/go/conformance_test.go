@@ -30,6 +30,7 @@ type validated interface {
 	proto.Message
 	Validate() error
 	ValidateResult() (*schemapb.ValidationResult, error)
+	Resolve() (*schemapb.ValidationResult, error)
 	SchemaPB() *schemapb.Schema
 }
 
@@ -37,6 +38,8 @@ type testCase struct {
 	Name    string          `json:"name"`
 	Message string          `json:"message"`
 	Input   json.RawMessage `json:"input"`
+	// Resolve also runs Resolve and pins the message it leaves behind.
+	Resolve bool `json:"resolve"`
 }
 
 func loadCases(t *testing.T) []testCase {
@@ -55,13 +58,14 @@ func loadCases(t *testing.T) []testCase {
 	return cases
 }
 
-//nolint:ireturn // the generated types are only known through the registry
+//nolint:ireturn,nolintlint // generated types are known only through the registry; ireturn is nondeterministic
 func newMessage(t *testing.T, name string) validated {
 	t.Helper()
 
 	// link the generated types into the registry
 	_ = conformancev1.File_conformance_v1_conformance_proto
 	_ = conformancev1.File_conformance_v1_kinds_proto
+	_ = conformancev1.File_conformance_v1_envelope_proto
 	_ = otherv1.File_conformance_other_v1_other_proto
 	_ = editionv1.File_conformance_edition_v1_edition_proto
 
@@ -106,6 +110,21 @@ func TestConformance(t *testing.T) {
 			}
 
 			checkGolden(t, filepath.Join("..", "golden", tc.Name+".json"), res)
+
+			if !tc.Resolve {
+				return
+			}
+
+			resolved, err := msg.Resolve()
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if !proto.Equal(resolved, res) {
+				t.Fatalf("Resolve result differs from ValidateResult:\n%v\n%v", resolved, res)
+			}
+
+			checkGolden(t, filepath.Join("..", "golden", tc.Name+".resolved.json"), msg)
 		})
 	}
 }
@@ -117,7 +136,7 @@ func TestSchemas(t *testing.T) {
 
 	for _, name := range []string{
 		"conformance.v1.User", "conformance.v1.User.Settings", "conformance.v1.Address", "conformance.v1.Node",
-		"conformance.v1.Kinds", "conformance.other.v1.Ref", "conformance.edition.v1.Doc",
+		"conformance.v1.Kinds", "conformance.other.v1.Ref", "conformance.edition.v1.Doc", "conformance.v1.Envelope",
 	} {
 		msg := newMessage(t, name)
 		checkGolden(t, filepath.Join("..", "golden", "schema."+name+".json"), msg.SchemaPB())

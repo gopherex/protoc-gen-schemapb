@@ -6,101 +6,131 @@ package conformancev1
 import (
 	protomsg "github.com/gopherex/schemapb/go/protomsg"
 	schemapb "github.com/gopherex/schemapb/go/schemapb"
+	sync "sync"
 )
 
 // Compile-time assertion that this code is compatible with the runtime.
 const _ = protomsg.SupportPackageIsVersion1
 
-var _Address_schemapb = protomsg.New("\n!\n\x0econformance.v1\x12\aAddress\x1a\x06v1.0.0\x12\x11A postal ad" +
-	"dress.\x1a\n\n\x04cityj\x02 \x01\x1a\x13\n\x03zipj\f2\n^[0-9]{5}$")
+var _Address_schemapb = sync.OnceValue(func() *protomsg.Validator {
+	return protomsg.New("\n!\n\x0econformance.v1\x12\aAddress\x1a\x06v1.0.0\x12\x11A postal ad" +
+		"dress.\x1a\n\n\x04cityj\x02 \x01\x1a\x13\n\x03zipj\f2\n^[0-9]{5}$")
+})
 
 // Validate validates x against its schemapb schema. It returns nil when
 // nothing blocks (warnings alone do not), the *schemapb.ValidationResult
 // otherwise, or a programmatic error.
-func (x *Address) Validate() error { return _Address_schemapb.Validate(x) }
+func (x *Address) Validate() error { return _Address_schemapb().Validate(x) }
 
 // ValidateResult validates x and returns every failure, warnings included.
 func (x *Address) ValidateResult() (*schemapb.ValidationResult, error) {
-	return _Address_schemapb.Check(x)
+	return _Address_schemapb().Check(x)
+}
+
+// Resolve validates x and, when nothing blocks, writes the resolved values
+// (defaults, normalize, computed) back into it; x is untouched otherwise.
+func (x *Address) Resolve() (*schemapb.ValidationResult, error) {
+	return _Address_schemapb().Resolve(x)
 }
 
 // SchemaPB returns the schemapb schema of Address.
-func (*Address) SchemaPB() *schemapb.Schema { return _Address_schemapb.Schema() }
+func (*Address) SchemaPB() *schemapb.Schema { return _Address_schemapb().Schema() }
 
-var _Node_schemapb = protomsg.New("\n\x1e\n\x0econformance.v1\x12\x04Node\x1a\x06v1.0.0\x12(A node of a tr" +
-	"ee, to exercise recursion.\x1a\n\n\x04namej\x02 \x01\x1a/\n\bchildr" +
-	"en\x8a\x01\"\n\x1e\n\x04item\xea\x01\x15\n\x13conformance.v1.Node\x18\x02J\x9f\x01\n\x13conf" +
-	"ormance.v1.Node\x12\x87\x01\n\x1e\n\x0econformance.v1\x12\x04Node\x1a\x06v1.0" +
-	".0\x12(A node of a tree, to exercise recursion.\x1a\n\n\x04" +
-	"namej\x02 \x01\x1a/\n\bchildren\x8a\x01\"\n\x1e\n\x04item\xea\x01\x15\n\x13conformance." +
-	"v1.Node\x18\x02")
+var _Node_schemapb = sync.OnceValue(func() *protomsg.Validator {
+	return protomsg.New("\n\x1e\n\x0econformance.v1\x12\x04Node\x1a\x06v1.0.0\x12(A node of a tr" +
+		"ee, to exercise recursion.\x1a\n\n\x04namej\x02 \x01\x1a/\n\bchildr" +
+		"en\x8a\x01\"\n\x1e\n\x04item\xea\x01\x15\n\x13conformance.v1.Node\x18\x02J\x9f\x01\n\x13conf" +
+		"ormance.v1.Node\x12\x87\x01\n\x1e\n\x0econformance.v1\x12\x04Node\x1a\x06v1.0" +
+		".0\x12(A node of a tree, to exercise recursion.\x1a\n\n\x04" +
+		"namej\x02 \x01\x1a/\n\bchildren\x8a\x01\"\n\x1e\n\x04item\xea\x01\x15\n\x13conformance." +
+		"v1.Node\x18\x02")
+})
 
 // Validate validates x against its schemapb schema. It returns nil when
 // nothing blocks (warnings alone do not), the *schemapb.ValidationResult
 // otherwise, or a programmatic error.
-func (x *Node) Validate() error { return _Node_schemapb.Validate(x) }
+func (x *Node) Validate() error { return _Node_schemapb().Validate(x) }
 
 // ValidateResult validates x and returns every failure, warnings included.
-func (x *Node) ValidateResult() (*schemapb.ValidationResult, error) { return _Node_schemapb.Check(x) }
+func (x *Node) ValidateResult() (*schemapb.ValidationResult, error) { return _Node_schemapb().Check(x) }
+
+// Resolve validates x and, when nothing blocks, writes the resolved values
+// (defaults, normalize, computed) back into it; x is untouched otherwise.
+func (x *Node) Resolve() (*schemapb.ValidationResult, error) { return _Node_schemapb().Resolve(x) }
 
 // SchemaPB returns the schemapb schema of Node.
-func (*Node) SchemaPB() *schemapb.Schema { return _Node_schemapb.Schema() }
+func (*Node) SchemaPB() *schemapb.Schema { return _Node_schemapb().Schema() }
 
-var _User_schemapb = protomsg.New("\n\x1e\n\x0econformance.v1\x12\x04User\x1a\x06v1.0.0\x120A user account" +
-	": the kitchen sink of the mapping.\x1a\x1b\n\x04name\x12\rDisp" +
-	"lay name.j\x04 \x02( \x1a\f\n\x03ageB\x05 \x000\x96\x01\x1a\x12\n\x05email \x01j\aJ\x05emai" +
-	"l\x1aQ\n\x04tierrI\n\x1f\n\vJ\tTIER_FREE\x12\x04Free\x1a\nFree tier.\n\x13\n\v" +
-	"J\tTIER_GOLD\x12\x04Gold\n\x11\n\rJ\vTIER_LEGACY \x01\x1a\x19\n\x04tags\x8a\x01\x10\n" +
-	"\n\n\x04itemj\x02 \x01\x18\x03 \x01\x1a\x1a\n\x06quotas\xfa\x01\x0f\x18\x02\"\v\n\x05valueJ\x02\x18\x00\x1a&\n\aa" +
-	"ddress \x01\xea\x01\x18\n\x16conformance.v1.Address\x1a0\n\bprevious\x8a" +
-	"\x01#\n!\n\x04item\xea\x01\x18\n\x16conformance.v1.Address\x1a0\n\aoffices" +
-	"\xfa\x01$\"\"\n\x05value\xea\x01\x18\n\x16conformance.v1.Address\x1a\x11\n\ncreat" +
-	"ed_at\x82\x01\x02\x12\x00\x1a\x10\n\asessionz\x05*\x03\b\x90\x1c\x1a\v\n\x05limitR\x020d\x1a\t\n\x04met" +
-	"a\x8a\x02\x00\x1a\x11\n\bpassword\xd0\x01\x01j\x02 \b\x1aE\n\x06coupon\x12\x1cOnly checked " +
-	"for gold users.\xf2\x01\x18root.tier == 'TIER_GOLD'j\x02\x18\x06\x1a\x15" +
-	"\n\x05phonej\f2\n^\\+[0-9]+$\x1a\f\n\btelegramj\x00\x1a\x1e\n\x04tree\xea\x01\x15\n\x13" +
-	"conformance.v1.Node\x1a\r\n\x06avatar\x82\x02\x02(\x04\x1a\x1b\n\x05score:\x12!\x00\x00" +
-	"\x00\x00\x00\x00\x00\x00)\x00\x00\x00\x00\x00\x00\xf0?\x1a\v\n\acreditsZ\x00\x1a+\n\bsettings\xea\x01\x1e\n\x1ccon" +
-	"formance.v1.User.Settings\x1a\x1c\n\x04planr\x14\n\t\n\aJ\x05basic\n\a" +
-	"\n\x05J\x03pro\"S\n*this.tier != 'TIER_GOLD' || this.age " +
-	">= 18\x12\x19gold users must be adults\x1a\nadult-gold\"/\n\x14" +
-	"size(this.name) < 20\x12\tlong name\x1a\nshort-name \x02\"Z\n" +
-	"%has(this.phone) || has(this.telegram)\x12\"one of p" +
-	"hone, telegram is required\x1a\roneof:contactJq\n\x16con" +
-	"formance.v1.Address\x12W\n!\n\x0econformance.v1\x12\aAddress" +
-	"\x1a\x06v1.0.0\x12\x11A postal address.\x1a\n\n\x04cityj\x02 \x01\x1a\x13\n\x03zipj\f" +
-	"2\n^[0-9]{5}$J\x9f\x01\n\x13conformance.v1.Node\x12\x87\x01\n\x1e\n\x0econfo" +
-	"rmance.v1\x12\x04Node\x1a\x06v1.0.0\x12(A node of a tree, to ex" +
-	"ercise recursion.\x1a\n\n\x04namej\x02 \x01\x1a/\n\bchildren\x8a\x01\"\n\x1e\n\x04" +
-	"item\xea\x01\x15\n\x13conformance.v1.Node\x18\x02J\x93\x01\n\x1cconformance.v" +
-	"1.User.Settings\x12s\n'\n\x0econformance.v1\x12\rUser.Settin" +
-	"gs\x1a\x06v1.0.0\x124Per-user settings, nested to exercis" +
-	"e nested naming.\x1a\x12\n\x06localej\b:\x02en:\x02ru")
+var _User_schemapb = sync.OnceValue(func() *protomsg.Validator {
+	return protomsg.New("\n\x1e\n\x0econformance.v1\x12\x04User\x1a\x06v1.0.0\x120A user account" +
+		": the kitchen sink of the mapping.\x1a\x1b\n\x04name\x12\rDisp" +
+		"lay name.j\x04 \x02( \x1a\f\n\x03ageB\x05 \x000\x96\x01\x1a\x12\n\x05email \x01j\aJ\x05emai" +
+		"l\x1aQ\n\x04tierrI\n\x1f\n\vJ\tTIER_FREE\x12\x04Free\x1a\nFree tier.\n\x13\n\v" +
+		"J\tTIER_GOLD\x12\x04Gold\n\x11\n\rJ\vTIER_LEGACY \x01\x1a\x19\n\x04tags\x8a\x01\x10\n" +
+		"\n\n\x04itemj\x02 \x01\x18\x03 \x01\x1a#\n\x06quotas\xfa\x01\x18\x18\x02\"\v\n\x05valueJ\x02\x18\x00*\a\n\x03k" +
+		"eyj\x00\x1a&\n\aaddress \x01\xea\x01\x18\n\x16conformance.v1.Address\x1a0\n\b" +
+		"previous\x8a\x01#\n!\n\x04item\xea\x01\x18\n\x16conformance.v1.Address\x1a9" +
+		"\n\aoffices\xfa\x01-\"\"\n\x05value\xea\x01\x18\n\x16conformance.v1.Address" +
+		"*\a\n\x03keyj\x00\x1a\x11\n\ncreated_at\x82\x01\x02\x12\x00\x1a\x10\n\asessionz\x05*\x03\b\x90\x1c\x1a\v" +
+		"\n\x05limitR\x020d\x1a\t\n\x04meta\x8a\x02\x00\x1a\x11\n\bpassword\xd0\x01\x01j\x02 \b\x1aE\n\x06cou" +
+		"pon\x12\x1cOnly checked for gold users.\xf2\x01\x18root.tier ==" +
+		" 'TIER_GOLD'j\x02\x18\x06\x1a\x15\n\x05phonej\f2\n^\\+[0-9]+$\x1a\f\n\bteleg" +
+		"ramj\x00\x1a\x1e\n\x04tree\xea\x01\x15\n\x13conformance.v1.Node\x1a\r\n\x06avatar\x82" +
+		"\x02\x02(\x04\x1a\x1b\n\x05score:\x12!\x00\x00\x00\x00\x00\x00\x00\x00)\x00\x00\x00\x00\x00\x00\xf0?\x1a\v\n\acreditsZ\x00\x1a+" +
+		"\n\bsettings\xea\x01\x1e\n\x1cconformance.v1.User.Settings\x1a\x1c\n\x04p" +
+		"lanr\x14\n\t\n\aJ\x05basic\n\a\n\x05J\x03pro\"S\n*this.tier != 'TIER_" +
+		"GOLD' || this.age >= 18\x12\x19gold users must be adul" +
+		"ts\x1a\nadult-gold\"/\n\x14size(this.name) < 20\x12\tlong nam" +
+		"e\x1a\nshort-name \x02\"Z\n%has(this.phone) || has(this.t" +
+		"elegram)\x12\"one of phone, telegram is required\x1a\ron" +
+		"eof:contactJq\n\x16conformance.v1.Address\x12W\n!\n\x0econfo" +
+		"rmance.v1\x12\aAddress\x1a\x06v1.0.0\x12\x11A postal address.\x1a\n\n" +
+		"\x04cityj\x02 \x01\x1a\x13\n\x03zipj\f2\n^[0-9]{5}$J\x9f\x01\n\x13conformance.v" +
+		"1.Node\x12\x87\x01\n\x1e\n\x0econformance.v1\x12\x04Node\x1a\x06v1.0.0\x12(A nod" +
+		"e of a tree, to exercise recursion.\x1a\n\n\x04namej\x02 \x01\x1a" +
+		"/\n\bchildren\x8a\x01\"\n\x1e\n\x04item\xea\x01\x15\n\x13conformance.v1.Node\x18\x02" +
+		"J\x93\x01\n\x1cconformance.v1.User.Settings\x12s\n'\n\x0econforman" +
+		"ce.v1\x12\rUser.Settings\x1a\x06v1.0.0\x124Per-user settings," +
+		" nested to exercise nested naming.\x1a\x12\n\x06localej\b:\x02" +
+		"en:\x02ru")
+})
 
 // Validate validates x against its schemapb schema. It returns nil when
 // nothing blocks (warnings alone do not), the *schemapb.ValidationResult
 // otherwise, or a programmatic error.
-func (x *User) Validate() error { return _User_schemapb.Validate(x) }
+func (x *User) Validate() error { return _User_schemapb().Validate(x) }
 
 // ValidateResult validates x and returns every failure, warnings included.
-func (x *User) ValidateResult() (*schemapb.ValidationResult, error) { return _User_schemapb.Check(x) }
+func (x *User) ValidateResult() (*schemapb.ValidationResult, error) { return _User_schemapb().Check(x) }
+
+// Resolve validates x and, when nothing blocks, writes the resolved values
+// (defaults, normalize, computed) back into it; x is untouched otherwise.
+func (x *User) Resolve() (*schemapb.ValidationResult, error) { return _User_schemapb().Resolve(x) }
 
 // SchemaPB returns the schemapb schema of User.
-func (*User) SchemaPB() *schemapb.Schema { return _User_schemapb.Schema() }
+func (*User) SchemaPB() *schemapb.Schema { return _User_schemapb().Schema() }
 
-var _User_Settings_schemapb = protomsg.New("\n'\n\x0econformance.v1\x12\rUser.Settings\x1a\x06v1.0.0\x124Per-u" +
-	"ser settings, nested to exercise nested naming.\x1a" +
-	"\x12\n\x06localej\b:\x02en:\x02ru")
+var _User_Settings_schemapb = sync.OnceValue(func() *protomsg.Validator {
+	return protomsg.New("\n'\n\x0econformance.v1\x12\rUser.Settings\x1a\x06v1.0.0\x124Per-u" +
+		"ser settings, nested to exercise nested naming.\x1a" +
+		"\x12\n\x06localej\b:\x02en:\x02ru")
+})
 
 // Validate validates x against its schemapb schema. It returns nil when
 // nothing blocks (warnings alone do not), the *schemapb.ValidationResult
 // otherwise, or a programmatic error.
-func (x *User_Settings) Validate() error { return _User_Settings_schemapb.Validate(x) }
+func (x *User_Settings) Validate() error { return _User_Settings_schemapb().Validate(x) }
 
 // ValidateResult validates x and returns every failure, warnings included.
 func (x *User_Settings) ValidateResult() (*schemapb.ValidationResult, error) {
-	return _User_Settings_schemapb.Check(x)
+	return _User_Settings_schemapb().Check(x)
+}
+
+// Resolve validates x and, when nothing blocks, writes the resolved values
+// (defaults, normalize, computed) back into it; x is untouched otherwise.
+func (x *User_Settings) Resolve() (*schemapb.ValidationResult, error) {
+	return _User_Settings_schemapb().Resolve(x)
 }
 
 // SchemaPB returns the schemapb schema of User_Settings.
-func (*User_Settings) SchemaPB() *schemapb.Schema { return _User_Settings_schemapb.Schema() }
+func (*User_Settings) SchemaPB() *schemapb.Schema { return _User_Settings_schemapb().Schema() }

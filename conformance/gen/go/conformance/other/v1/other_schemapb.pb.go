@@ -6,21 +6,28 @@ package otherv1
 import (
 	protomsg "github.com/gopherex/schemapb/go/protomsg"
 	schemapb "github.com/gopherex/schemapb/go/schemapb"
+	sync "sync"
 )
 
 // Compile-time assertion that this code is compatible with the runtime.
 const _ = protomsg.SupportPackageIsVersion1
 
-var _Ref_schemapb = protomsg.New("\n\x1b\n\x14conformance.other.v1\x12\x03Ref\x126A message of anot" +
-	"her package, referenced across files.\x1a\b\n\x02idj\x02 \x03")
+var _Ref_schemapb = sync.OnceValue(func() *protomsg.Validator {
+	return protomsg.New("\n\x1b\n\x14conformance.other.v1\x12\x03Ref\x126A message of anot" +
+		"her package, referenced across files.\x1a\b\n\x02idj\x02 \x03")
+})
 
 // Validate validates x against its schemapb schema. It returns nil when
 // nothing blocks (warnings alone do not), the *schemapb.ValidationResult
 // otherwise, or a programmatic error.
-func (x *Ref) Validate() error { return _Ref_schemapb.Validate(x) }
+func (x *Ref) Validate() error { return _Ref_schemapb().Validate(x) }
 
 // ValidateResult validates x and returns every failure, warnings included.
-func (x *Ref) ValidateResult() (*schemapb.ValidationResult, error) { return _Ref_schemapb.Check(x) }
+func (x *Ref) ValidateResult() (*schemapb.ValidationResult, error) { return _Ref_schemapb().Check(x) }
+
+// Resolve validates x and, when nothing blocks, writes the resolved values
+// (defaults, normalize, computed) back into it; x is untouched otherwise.
+func (x *Ref) Resolve() (*schemapb.ValidationResult, error) { return _Ref_schemapb().Resolve(x) }
 
 // SchemaPB returns the schemapb schema of Ref.
-func (*Ref) SchemaPB() *schemapb.Schema { return _Ref_schemapb.Schema() }
+func (*Ref) SchemaPB() *schemapb.Schema { return _Ref_schemapb().Schema() }

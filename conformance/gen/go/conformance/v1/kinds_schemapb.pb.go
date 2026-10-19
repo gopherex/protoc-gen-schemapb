@@ -6,33 +6,42 @@ package conformancev1
 import (
 	protomsg "github.com/gopherex/schemapb/go/protomsg"
 	schemapb "github.com/gopherex/schemapb/go/schemapb"
+	sync "sync"
 )
 
 // Compile-time assertion that this code is compatible with the runtime.
 const _ = protomsg.SupportPackageIsVersion1
 
-var _Kinds_schemapb = protomsg.New("\n\x17\n\x0econformance.v1\x12\x05Kinds\x12pThe remaining mapping" +
-	" paths: cross-package refs, well-known types, ma" +
-	"p\nkey kinds, 64-bit integers as JS strings.\x1a$\n\x03r" +
-	"ef \x01\xea\x01\x1a\n\x18conformance.other.v1.Ref\x1a.\n\x04refs\x8a\x01%\n#\n\x04" +
-	"item\xea\x01\x1a\n\x18conformance.other.v1.Ref\x1a\f\n\x05empty\x92\x01\x02\n\x00\x1a" +
-	"\x17\n\x04mask\x8a\x01\x0e\n\n\n\x04itemj\x02 \x01\x18\x01\x1a\n\n\x05value\x8a\x02\x00\x1a\v\n\x06values\x8a\x02" +
-	"\x00\x1a\r\n\awrappedJ\x02\x18\x00\x1a\b\n\x04flagb\x00\x1a\v\n\x05labelj\x02(\x03\x1a\t\n\x04blob\x82" +
-	"\x02\x00\x1a\x12\n\x05ratio:\t1\x00\x00\x00\x00\x00\x00\xf0?\x1a\t\n\x03bigJ\x02(\n\x1a\v\n\x05fixedZ\x02(\n\x1a\x15" +
-	"\n\x06signedB\v\x18\xfb\xff\xff\xff\xff\xff\xff\xff\xff\x01\x1a\x10\n\aratio322\x05\x1d\x00\x00\x00\x00\x1a\x18\n\x06by_nu" +
-	"m\xfa\x01\r\"\v\n\x05valuej\x02 \x01\x1a2\n\aby_flag\xfa\x01&\"$\n\x05value\xea\x01\x1a\n\x18con" +
-	"formance.other.v1.RefJ{\n\x18conformance.other.v1.Re" +
-	"f\x12_\n\x1b\n\x14conformance.other.v1\x12\x03Ref\x126A message of a" +
-	"nother package, referenced across files.\x1a\b\n\x02idj\x02" +
-	" \x03")
+var _Kinds_schemapb = sync.OnceValue(func() *protomsg.Validator {
+	return protomsg.New("\n\x17\n\x0econformance.v1\x12\x05Kinds\x12pThe remaining mapping" +
+		" paths: cross-package refs, well-known types, ma" +
+		"p\nkey kinds, 64-bit integers as JS strings.\x1a$\n\x03r" +
+		"ef \x01\xea\x01\x1a\n\x18conformance.other.v1.Ref\x1a.\n\x04refs\x8a\x01%\n#\n\x04" +
+		"item\xea\x01\x1a\n\x18conformance.other.v1.Ref\x1a\f\n\x05empty\x92\x01\x02\n\x00\x1a" +
+		"\x17\n\x04mask\x8a\x01\x0e\n\n\n\x04itemj\x02 \x01\x18\x01\x1a\n\n\x05value\x8a\x02\x00\x1a\v\n\x06values\x8a\x02" +
+		"\x00\x1a\r\n\awrappedJ\x02\x18\x00\x1a\b\n\x04flagb\x00\x1a\v\n\x05labelj\x02(\x03\x1a\t\n\x04blob\x82" +
+		"\x02\x00\x1a\x12\n\x05ratio:\t1\x00\x00\x00\x00\x00\x00\xf0?\x1a\t\n\x03bigJ\x02(\n\x1a\v\n\x05fixedZ\x02(\n\x1a\x15" +
+		"\n\x06signedB\v\x18\xfb\xff\xff\xff\xff\xff\xff\xff\xff\x01\x1a\x10\n\aratio322\x05\x1d\x00\x00\x00\x00\x1a!\n\x06by_nu" +
+		"m\xfa\x01\x16\"\v\n\x05valuej\x02 \x01*\a\n\x03keyB\x00\x1a;\n\aby_flag\xfa\x01/\"$\n\x05valu" +
+		"e\xea\x01\x1a\n\x18conformance.other.v1.Ref*\a\n\x03keyb\x00J{\n\x18confo" +
+		"rmance.other.v1.Ref\x12_\n\x1b\n\x14conformance.other.v1\x12\x03R" +
+		"ef\x126A message of another package, referenced acr" +
+		"oss files.\x1a\b\n\x02idj\x02 \x03")
+})
 
 // Validate validates x against its schemapb schema. It returns nil when
 // nothing blocks (warnings alone do not), the *schemapb.ValidationResult
 // otherwise, or a programmatic error.
-func (x *Kinds) Validate() error { return _Kinds_schemapb.Validate(x) }
+func (x *Kinds) Validate() error { return _Kinds_schemapb().Validate(x) }
 
 // ValidateResult validates x and returns every failure, warnings included.
-func (x *Kinds) ValidateResult() (*schemapb.ValidationResult, error) { return _Kinds_schemapb.Check(x) }
+func (x *Kinds) ValidateResult() (*schemapb.ValidationResult, error) {
+	return _Kinds_schemapb().Check(x)
+}
+
+// Resolve validates x and, when nothing blocks, writes the resolved values
+// (defaults, normalize, computed) back into it; x is untouched otherwise.
+func (x *Kinds) Resolve() (*schemapb.ValidationResult, error) { return _Kinds_schemapb().Resolve(x) }
 
 // SchemaPB returns the schemapb schema of Kinds.
-func (*Kinds) SchemaPB() *schemapb.Schema { return _Kinds_schemapb.Schema() }
+func (*Kinds) SchemaPB() *schemapb.Schema { return _Kinds_schemapb().Schema() }

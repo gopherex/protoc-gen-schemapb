@@ -1,0 +1,153 @@
+{
+  "description": "Any unions, map key constraints and Resolve write-back.",
+  "fields": [
+    {
+      "description": "A union over two types, one from another package.",
+      "name": "payload",
+      "oneOf": {
+        "discriminator": "@type",
+        "variants": {
+          "type.googleapis.com/conformance.other.v1.Ref": {
+            "description": "A message of another package, referenced across files.",
+            "fields": [
+              {
+                "name": "id",
+                "string": {
+                  "minLen": "3"
+                }
+              }
+            ],
+            "id": {
+              "name": "Ref",
+              "namespace": "conformance.other.v1"
+            }
+          },
+          "type.googleapis.com/conformance.v1.Address": {
+            "description": "A postal address.",
+            "fields": [
+              {
+                "name": "city",
+                "string": {
+                  "minLen": "1"
+                }
+              },
+              {
+                "name": "zip",
+                "string": {
+                  "pattern": "^[0-9]{5}$"
+                }
+              }
+            ],
+            "id": {
+              "name": "Address",
+              "namespace": "conformance.v1",
+              "version": "v1.0.0"
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "No types: json, only \"@type\" is seen.",
+      "json": {},
+      "name": "opaque"
+    },
+    {
+      "map": {
+        "keyField": {
+          "name": "key",
+          "string": {
+            "pattern": "^[a-z]+$"
+          }
+        },
+        "valueField": {
+          "int32": {
+            "gte": 0
+          },
+          "name": "value"
+        }
+      },
+      "name": "scores"
+    },
+    {
+      "map": {
+        "keyField": {
+          "int32": {
+            "gt": 0
+          },
+          "name": "key"
+        },
+        "valueField": {
+          "name": "value",
+          "string": {}
+        }
+      },
+      "name": "by_id"
+    },
+    {
+      "name": "slug",
+      "normalize": "this.lowerAscii()",
+      "string": {
+        "pattern": "^[a-z-]+$"
+      }
+    },
+    {
+      "name": "region",
+      "string": {
+        "default": "eu"
+      }
+    },
+    {
+      "computed": {
+        "expr": "size(root.tags)",
+        "result": "RESULT_TYPE_INT64"
+      },
+      "name": "tag_count"
+    },
+    {
+      "list": {
+        "items": [
+          {
+            "name": "item",
+            "string": {}
+          }
+        ]
+      },
+      "name": "tags"
+    },
+    {
+      "list": {
+        "items": [
+          {
+            "name": "item",
+            "oneOf": {
+              "discriminator": "@type",
+              "variants": {
+                "type.googleapis.com/conformance.other.v1.Ref": {
+                  "description": "A message of another package, referenced across files.",
+                  "fields": [
+                    {
+                      "name": "id",
+                      "string": {
+                        "minLen": "3"
+                      }
+                    }
+                  ],
+                  "id": {
+                    "name": "Ref",
+                    "namespace": "conformance.other.v1"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "name": "items"
+    }
+  ],
+  "id": {
+    "name": "Envelope",
+    "namespace": "conformance.v1"
+  }
+}

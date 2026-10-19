@@ -1,5 +1,5 @@
 // Package gogen emits the Go code of protoc-gen-go-schemapb: for every
-// message, the embedded schema and the Validate / ValidateResult /
+// message, the embedded schema and the Validate / ValidateResult / Resolve /
 // SchemaPB methods, backed by the schemapb protomsg runtime.
 package gogen
 
@@ -18,13 +18,14 @@ import (
 const (
 	protomsgPkg = protogen.GoImportPath("github.com/gopherex/schemapb/go/protomsg")
 	schemapbPkg = protogen.GoImportPath("github.com/gopherex/schemapb/go/schemapb")
+	syncPkg     = protogen.GoImportPath("sync")
 )
 
 // ErrCollision reports a message field whose Go name is a generated method.
 var ErrCollision = errors.New("field collides with a generated method")
 
 // methods are the names the generated code adds to every message type.
-func methods() []string { return []string{"Validate", "ValidateResult", "SchemaPB"} }
+func methods() []string { return []string{"Validate", "ValidateResult", "Resolve", "SchemaPB"} }
 
 // GenerateFile emits <name>_schemapb.pb.go for file, or nothing when no
 // message of the file gets a validator.
@@ -43,8 +44,10 @@ func GenerateFile(plugin *protogen.Plugin, file *protogen.File) error {
 	g.P("// Compile-time assertion that this code is compatible with the runtime.")
 	g.P("const _ = ", protomsgPkg.Ident("SupportPackageIsVersion1"))
 
+	fe := frontend.New(plugin)
+
 	for _, msg := range messages {
-		if err := message(g, msg); err != nil {
+		if err := message(g, fe, msg); err != nil {
 			return err
 		}
 	}
@@ -66,19 +69,19 @@ func collect(messages []*protogen.Message) []*protogen.Message {
 	return out
 }
 
-func message(g *protogen.GeneratedFile, msg *protogen.Message) error {
+func message(g *protogen.GeneratedFile, front frontend.Frontend, msg *protogen.Message) error {
 	for _, field := range msg.Fields {
 		if slices.Contains(methods(), field.GoName) {
 			return fmt.Errorf("%w: %s.%s (%s)", ErrCollision, msg.Desc.FullName(), field.Desc.Name(), field.GoName)
 		}
 	}
 
-	schema, err := frontend.Schema(msg)
+	built, err := front.Schema(msg)
 	if err != nil {
 		return fmt.Errorf("gogen: %w", err)
 	}
 
-	raw, err := proto.MarshalOptions{Deterministic: true}.Marshal(schema)
+	raw, err := proto.MarshalOptions{Deterministic: true}.Marshal(built.Schema)
 	if err != nil {
 		return fmt.Errorf("gogen: encode schema of %s: %w", msg.Desc.FullName(), err)
 	}
@@ -89,18 +92,39 @@ func message(g *protogen.GeneratedFile, msg *protogen.Message) error {
 	schemaType := g.QualifiedGoIdent(schemapbPkg.Ident("Schema"))
 
 	g.P()
-	g.P("var ", validator, " = ", protomsgPkg.Ident("New"), "(", literal(raw), ")")
+	// Built on first use: Any types are reflected only after every
+	// descriptor of the program has registered, whatever the file order.
+	g.P("var ", validator, " = ", syncPkg.Ident("OnceValue"), "(func() *", protomsgPkg.Ident("Validator"), " {")
+
+	if len(built.AnyTypes) == 0 {
+		g.P("return ", protomsgPkg.Ident("New"), "(", literal(raw), ")")
+	} else {
+		g.P("return ", protomsgPkg.Ident("New"), "(", literal(raw), ",")
+		g.P(protomsgPkg.Ident("WithAnyTypes"), "(")
+
+		for _, t := range built.AnyTypes {
+			g.P("(*", t.GoIdent, ")(nil).ProtoReflect().Type(),")
+		}
+
+		g.P("))")
+	}
+
+	g.P("})")
 	g.P()
 	g.P("// Validate validates x against its schemapb schema. It returns nil when")
 	g.P("// nothing blocks (warnings alone do not), the *schemapb.ValidationResult")
 	g.P("// otherwise, or a programmatic error.")
-	g.P("func (x *", name, ") Validate() error { return ", validator, ".Validate(x) }")
+	g.P("func (x *", name, ") Validate() error { return ", validator, "().Validate(x) }")
 	g.P()
 	g.P("// ValidateResult validates x and returns every failure, warnings included.")
-	g.P("func (x *", name, ") ValidateResult() (*", result, ", error) { return ", validator, ".Check(x) }")
+	g.P("func (x *", name, ") ValidateResult() (*", result, ", error) { return ", validator, "().Check(x) }")
+	g.P()
+	g.P("// Resolve validates x and, when nothing blocks, writes the resolved values")
+	g.P("// (defaults, normalize, computed) back into it; x is untouched otherwise.")
+	g.P("func (x *", name, ") Resolve() (*", result, ", error) { return ", validator, "().Resolve(x) }")
 	g.P()
 	g.P("// SchemaPB returns the schemapb schema of ", name, ".")
-	g.P("func (*", name, ") SchemaPB() *", schemaType, " { return ", validator, ".Schema() }")
+	g.P("func (*", name, ") SchemaPB() *", schemaType, " { return ", validator, "().Schema() }")
 
 	return nil
 }

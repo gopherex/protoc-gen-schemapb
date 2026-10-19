@@ -1,0 +1,26 @@
+{
+  "byId": {
+    "-3": "neg",
+    "0": "zero"
+  },
+  "items": [
+    {
+      "@type": "type.googleapis.com/conformance.other.v1.Ref",
+      "id": "y"
+    },
+    {
+      "@type": "type.googleapis.com/conformance.v1.Address",
+      "city": "A",
+      "zip": "12345"
+    }
+  ],
+  "payload": {
+    "@type": "type.googleapis.com/conformance.other.v1.Ref",
+    "id": "x"
+  },
+  "scores": {
+    "Bad": -1,
+    "ok": 2
+  },
+  "slug": "no spaces"
+}

@@ -8,10 +8,12 @@
     "skipLibCheck": true,
     "types": [
       "node"
-    ]
+    ],
+    "allowJs": false
   },
   "include": [
     "*.ts",
-    "gen/**/*.ts"
+    "gen/**/*.ts",
+    "genjs/**/*.d.ts"
   ]
 }

@@ -139,6 +139,10 @@
     },
     {
       "map": {
+        "keyField": {
+          "name": "key",
+          "string": {}
+        },
         "maxEntries": "2",
         "valueField": {
           "int64": {
@@ -171,6 +175,10 @@
     },
     {
       "map": {
+        "keyField": {
+          "name": "key",
+          "string": {}
+        },
         "valueField": {
           "name": "value",
           "ref": {

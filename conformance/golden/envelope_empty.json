@@ -1,0 +1,27 @@
+{
+  "errors": [
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_PATTERN_MISMATCH",
+      "constraint": "pattern",
+      "expected": {
+        "stringValue": "^[a-z-]+$"
+      },
+      "message": "must match pattern ^[a-z-]+$",
+      "path": "slug",
+      "pathSegments": [
+        {
+          "fieldNumber": 5,
+          "key": "slug"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Envelope",
+    "namespace": "conformance.v1"
+  }
+}

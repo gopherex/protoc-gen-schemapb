@@ -32,13 +32,47 @@ func Skipped(msg *protogen.Message) bool {
 	return msg.Desc.IsMapEntry() || messageOptions(msg).GetSkip()
 }
 
+// Frontend translates the messages of one generation request. It indexes
+// every message of the request, so Any options can name types of any
+// imported file.
+type Frontend struct {
+	messages map[protoreflect.FullName]*protogen.Message
+}
+
+// New indexes the messages of plugin.
+func New(plugin *protogen.Plugin) Frontend {
+	front := Frontend{messages: map[protoreflect.FullName]*protogen.Message{}}
+
+	var index func([]*protogen.Message)
+
+	index = func(messages []*protogen.Message) {
+		for _, m := range messages {
+			front.messages[m.Desc.FullName()] = m
+			index(m.Messages)
+		}
+	}
+
+	for _, f := range plugin.Files {
+		index(f.Messages)
+	}
+
+	return front
+}
+
+// Result is the schema of one message and the message types its Any
+// fields may hold, which the runtime must be given to unpack them.
+type Result struct {
+	Schema   *schemapb.Schema
+	AnyTypes []*protogen.Message
+}
+
 // Schema returns the compiled-and-checked schema of msg.
-func Schema(msg *protogen.Message) (*schemapb.Schema, error) {
-	b := &builder{defs: map[string]*schemapb.Schema{}}
+func (fe Frontend) Schema(msg *protogen.Message) (Result, error) {
+	b := &builder{fe: fe, defs: map[string]*schemapb.Schema{}, anySeen: map[protoreflect.FullName]bool{}}
 
 	root, err := b.message(msg)
 	if err != nil {
-		return nil, err
+		return Result{}, err
 	}
 
 	if len(b.defs) > 0 {
@@ -46,14 +80,17 @@ func Schema(msg *protogen.Message) (*schemapb.Schema, error) {
 	}
 
 	if _, err := schemapb.Compile(root); err != nil {
-		return nil, fmt.Errorf("%s: %w", msg.Desc.FullName(), err)
+		return Result{}, fmt.Errorf("%s: %w", msg.Desc.FullName(), err)
 	}
 
-	return root, nil
+	return Result{Schema: root, AnyTypes: b.anyTypes}, nil
 }
 
 type builder struct {
-	defs map[string]*schemapb.Schema
+	fe       Frontend
+	defs     map[string]*schemapb.Schema
+	anyTypes []*protogen.Message
+	anySeen  map[protoreflect.FullName]bool
 }
 
 func (b *builder) message(msg *protogen.Message) (*schemapb.Schema, error) {
@@ -134,10 +171,6 @@ func (b *builder) field(field *protogen.Field) (*schemapb.Schema_Field, error) {
 		return nil, invalid(desc, "name is derived from the proto field and must not be set")
 	}
 
-	if out.GetComputed() != nil {
-		return nil, invalid(desc, "computed is not allowed on a proto field")
-	}
-
 	if out.GetRequired() && !desc.HasPresence() {
 		return nil, invalid(desc, "required needs field presence (optional, message or oneof member); "+
 			"an implicit-presence, repeated or map field is always present — use a constraint instead")
@@ -148,6 +181,8 @@ func (b *builder) field(field *protogen.Field) (*schemapb.Schema_Field, error) {
 	var err error
 
 	switch {
+	case out.GetComputed() != nil:
+		err = computedKind(field, out.GetComputed())
 	case desc.IsMap():
 		err = b.mapKind(field, out)
 	case desc.IsList():
@@ -231,11 +266,22 @@ func (b *builder) mapKind(field *protogen.Field, out *schemapb.Schema_Field) err
 	}
 
 	value.Name = "value"
-	if err := b.singular(field.Message.Fields[1], value); err != nil { // [0] is the key
+	if err := b.singular(field.Message.Fields[1], value); err != nil {
+		return err
+	}
+
+	key := mp.GetKeyField()
+	if key == nil {
+		key = &schemapb.Schema_Field{}
+	}
+
+	key.Name = "key"
+	if err := scalarKind(field.Message.Fields[0].Desc, field.Message.Fields[0].Desc.Kind(), key); err != nil {
 		return err
 	}
 
 	mp.ValueField = value
+	mp.KeyField = key
 	out.Kind = &schemapb.Schema_Field_Map_{Map: mp}
 
 	return nil
@@ -376,7 +422,7 @@ func (b *builder) messageKind(field *protogen.Field, out *schemapb.Schema_Field)
 		"google.protobuf.Int64Value", "google.protobuf.UInt64Value",
 		"google.protobuf.Int32Value", "google.protobuf.UInt32Value",
 		"google.protobuf.BoolValue", "google.protobuf.StringValue", "google.protobuf.BytesValue":
-		return scalarKind(field.Desc, msg.Fields[0].Desc.Kind(), out)
+		return scalarKind(field.Desc, msg.Fields[0].Desc.Kind(), out) // the wrapped "value"
 	case "google.protobuf.Struct", "google.protobuf.Value", "google.protobuf.ListValue":
 		derived.Kind = &schemapb.Schema_Field_Json_{Json: &schemapb.Schema_Field_Json{}}
 	case "google.protobuf.Empty":
@@ -386,7 +432,7 @@ func (b *builder) messageKind(field *protogen.Field, out *schemapb.Schema_Field)
 			return scalarKind(field.Desc, protoreflect.StringKind, item)
 		})
 	case "google.protobuf.Any":
-		return invalid(field.Desc, "google.protobuf.Any is not supported")
+		return b.anyKind(field, out)
 	default:
 		if out.GetKind() != nil {
 			return invalid(field.Desc, "a message field takes no kind (it is a ref to "+string(msg.Desc.FullName())+")")
@@ -404,6 +450,116 @@ func (b *builder) messageKind(field *protogen.Field, out *schemapb.Schema_Field)
 	}
 
 	return merge(field.Desc, out, derived)
+}
+
+// anyKind is a union on "@type" over the allowed types (AnyOptions), or
+// json when none are listed.
+func (b *builder) anyKind(field *protogen.Field, out *schemapb.Schema_Field) error {
+	opts, _ := proto.GetExtension(field.Desc.Options(), optionsv1.E_Any).(*optionsv1.AnyOptions)
+	if len(opts.GetTypes()) == 0 {
+		return merge(field.Desc, out, &schemapb.Schema_Field{
+			Kind: &schemapb.Schema_Field_Json_{Json: &schemapb.Schema_Field_Json{}},
+		})
+	}
+
+	if out.GetKind() != nil {
+		return invalid(field.Desc, "an Any field with types takes no kind (it is a union on @type)")
+	}
+
+	union := &schemapb.Schema_Field_OneOf{Discriminator: "@type", Variants: map[string]*schemapb.Schema{}}
+
+	for _, name := range opts.GetTypes() {
+		msg, ok := b.fe.messages[protoreflect.FullName(name)]
+		if !ok {
+			return invalid(field.Desc, fmt.Sprintf("Any type %q is not a message visible to this file", name))
+		}
+
+		variant, err := b.message(msg)
+		if err != nil {
+			return err
+		}
+
+		union.Variants["type.googleapis.com/"+name] = variant
+
+		if !b.anySeen[msg.Desc.FullName()] {
+			b.anySeen[msg.Desc.FullName()] = true
+			b.anyTypes = append(b.anyTypes, msg)
+		}
+	}
+
+	out.Kind = &schemapb.Schema_Field_OneOf_{OneOf: union}
+
+	return nil
+}
+
+// computedKind checks a computed proto field and defaults its result type
+// to the field's type, so Resolve can write the value back.
+func computedKind(field *protogen.Field, c *schemapb.Schema_Field_Computed) error {
+	desc := field.Desc
+	if desc.IsList() || desc.IsMap() {
+		return invalid(desc, "computed is allowed on a single scalar, enum or well-known scalar field")
+	}
+
+	result, ok := resultOf(desc)
+	if !ok {
+		return invalid(desc, "computed is allowed on a single scalar, enum or well-known scalar field")
+	}
+
+	if c.Result == nil {
+		c.Result = &result
+	}
+
+	return nil
+}
+
+func resultOf(desc protoreflect.FieldDescriptor) (schemapb.Schema_Field_ResultType, bool) {
+	kind := desc.Kind()
+	if desc.Message() != nil {
+		switch desc.Message().FullName() {
+		case "google.protobuf.Timestamp":
+			return schemapb.Schema_Field_RESULT_TYPE_TIMESTAMP, true
+		case "google.protobuf.Duration":
+			return schemapb.Schema_Field_RESULT_TYPE_DURATION, true
+		case "google.protobuf.Struct", "google.protobuf.Value", "google.protobuf.ListValue":
+			return schemapb.Schema_Field_RESULT_TYPE_JSON, true
+		}
+
+		if !isWrapper(desc.Message().FullName()) {
+			return 0, false
+		}
+
+		kind = desc.Message().Fields().ByName("value").Kind()
+	}
+
+	switch kind {
+	case protoreflect.BoolKind:
+		return schemapb.Schema_Field_RESULT_TYPE_BOOL, true
+	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind,
+		protoreflect.Int64Kind, protoreflect.Sint64Kind, protoreflect.Sfixed64Kind:
+		return schemapb.Schema_Field_RESULT_TYPE_INT64, true
+	case protoreflect.Uint32Kind, protoreflect.Fixed32Kind, protoreflect.Uint64Kind, protoreflect.Fixed64Kind:
+		return schemapb.Schema_Field_RESULT_TYPE_UINT64, true
+	case protoreflect.FloatKind, protoreflect.DoubleKind:
+		return schemapb.Schema_Field_RESULT_TYPE_DOUBLE, true
+	case protoreflect.StringKind, protoreflect.EnumKind:
+		return schemapb.Schema_Field_RESULT_TYPE_STRING, true
+	case protoreflect.BytesKind:
+		return schemapb.Schema_Field_RESULT_TYPE_BYTES, true
+	default:
+		return 0, false
+	}
+}
+
+func isWrapper(name protoreflect.FullName) bool {
+	switch name {
+	case "google.protobuf.DoubleValue", "google.protobuf.FloatValue",
+		"google.protobuf.Int64Value", "google.protobuf.UInt64Value",
+		"google.protobuf.Int32Value", "google.protobuf.UInt32Value",
+		"google.protobuf.BoolValue", "google.protobuf.StringValue", "google.protobuf.BytesValue":
+		return true
+	default:
+		return false
+	}
 }
 
 // def registers the schema of msg in the root defs, once. The placeholder

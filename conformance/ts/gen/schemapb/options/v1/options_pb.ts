@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file schemapb/options/v1/options.proto.
  */
 export const file_schemapb_options_v1_options: GenFile = /*@__PURE__*/
-  fileDesc("CiFzY2hlbWFwYi9vcHRpb25zL3YxL29wdGlvbnMucHJvdG8SE3NjaGVtYXBiLm9wdGlvbnMudjEiRAoLRmlsZU9wdGlvbnMSDwoHdmVyc2lvbhgBIAEoCRIWCgluYW1lc3BhY2UYAiABKAlIAIgBAUIMCgpfbmFtZXNwYWNlIs0CCg5NZXNzYWdlT3B0aW9ucxIMCgRza2lwGAEgASgIEioKBXJ1bGVzGAIgAygLMhsuc2NoZW1hcGIuU2NoZW1hLkZpZWxkLlJ1bGUSGwoObWluX3Byb3BlcnRpZXMYAyABKARIAIgBARIbCg5tYXhfcHJvcGVydGllcxgEIAEoBEgBiAEBEkUKCXRlbXBsYXRlcxgFIAMoCzIyLnNjaGVtYXBiLm9wdGlvbnMudjEuTWVzc2FnZU9wdGlvbnMuVGVtcGxhdGVzRW50cnkSGAoLZGVzY3JpcHRpb24YBiABKAlIAogBARowCg5UZW1wbGF0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQhEKD19taW5fcHJvcGVydGllc0IRCg9fbWF4X3Byb3BlcnRpZXNCDgoMX2Rlc2NyaXB0aW9uIiAKDE9uZW9mT3B0aW9ucxIQCghyZXF1aXJlZBgBIAEoCCJHChBFbnVtVmFsdWVPcHRpb25zEg8KB2V4Y2x1ZGUYASABKAgSDQoFbGFiZWwYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAk6TQoFZmllbGQSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGJLVAyABKAsyFi5zY2hlbWFwYi5TY2hlbWEuRmllbGRSBWZpZWxkOlQKBGZpbGUSHC5nb29nbGUucHJvdG9idWYuRmlsZU9wdGlvbnMYktUDIAEoCzIgLnNjaGVtYXBiLm9wdGlvbnMudjEuRmlsZU9wdGlvbnNSBGZpbGU6YAoHbWVzc2FnZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxiS1QMgASgLMiMuc2NoZW1hcGIub3B0aW9ucy52MS5NZXNzYWdlT3B0aW9uc1IHbWVzc2FnZTpYCgVvbmVvZhIdLmdvb2dsZS5wcm90b2J1Zi5PbmVvZk9wdGlvbnMYktUDIAEoCzIhLnNjaGVtYXBiLm9wdGlvbnMudjEuT25lb2ZPcHRpb25zUgVvbmVvZjppCgplbnVtX3ZhbHVlEiEuZ29vZ2xlLnByb3RvYnVmLkVudW1WYWx1ZU9wdGlvbnMYktUDIAEoCzIlLnNjaGVtYXBiLm9wdGlvbnMudjEuRW51bVZhbHVlT3B0aW9uc1IJZW51bVZhbHVlQkdaRWdpdGh1Yi5jb20vZ29waGVyZXgvcHJvdG9jLWdlbi1zY2hlbWFwYi9zY2hlbWFwYi9vcHRpb25zL3YxO29wdGlvbnN2MWIGcHJvdG8z", [file_google_protobuf_descriptor, file_schemapb_schema]);
+  fileDesc("CiFzY2hlbWFwYi9vcHRpb25zL3YxL29wdGlvbnMucHJvdG8SE3NjaGVtYXBiLm9wdGlvbnMudjEiRAoLRmlsZU9wdGlvbnMSDwoHdmVyc2lvbhgBIAEoCRIWCgluYW1lc3BhY2UYAiABKAlIAIgBAUIMCgpfbmFtZXNwYWNlIs0CCg5NZXNzYWdlT3B0aW9ucxIMCgRza2lwGAEgASgIEioKBXJ1bGVzGAIgAygLMhsuc2NoZW1hcGIuU2NoZW1hLkZpZWxkLlJ1bGUSGwoObWluX3Byb3BlcnRpZXMYAyABKARIAIgBARIbCg5tYXhfcHJvcGVydGllcxgEIAEoBEgBiAEBEkUKCXRlbXBsYXRlcxgFIAMoCzIyLnNjaGVtYXBiLm9wdGlvbnMudjEuTWVzc2FnZU9wdGlvbnMuVGVtcGxhdGVzRW50cnkSGAoLZGVzY3JpcHRpb24YBiABKAlIAogBARowCg5UZW1wbGF0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQhEKD19taW5fcHJvcGVydGllc0IRCg9fbWF4X3Byb3BlcnRpZXNCDgoMX2Rlc2NyaXB0aW9uIhsKCkFueU9wdGlvbnMSDQoFdHlwZXMYASADKAkiIAoMT25lb2ZPcHRpb25zEhAKCHJlcXVpcmVkGAEgASgIIkcKEEVudW1WYWx1ZU9wdGlvbnMSDwoHZXhjbHVkZRgBIAEoCBINCgVsYWJlbBgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCTpNCgVmaWVsZBIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYktUDIAEoCzIWLnNjaGVtYXBiLlNjaGVtYS5GaWVsZFIFZmllbGQ6UgoDYW55Eh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxiT1QMgASgLMh8uc2NoZW1hcGIub3B0aW9ucy52MS5BbnlPcHRpb25zUgNhbnk6VAoEZmlsZRIcLmdvb2dsZS5wcm90b2J1Zi5GaWxlT3B0aW9ucxiS1QMgASgLMiAuc2NoZW1hcGIub3B0aW9ucy52MS5GaWxlT3B0aW9uc1IEZmlsZTpgCgdtZXNzYWdlEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGJLVAyABKAsyIy5zY2hlbWFwYi5vcHRpb25zLnYxLk1lc3NhZ2VPcHRpb25zUgdtZXNzYWdlOlgKBW9uZW9mEh0uZ29vZ2xlLnByb3RvYnVmLk9uZW9mT3B0aW9ucxiS1QMgASgLMiEuc2NoZW1hcGIub3B0aW9ucy52MS5PbmVvZk9wdGlvbnNSBW9uZW9mOmkKCmVudW1fdmFsdWUSIS5nb29nbGUucHJvdG9idWYuRW51bVZhbHVlT3B0aW9ucxiS1QMgASgLMiUuc2NoZW1hcGIub3B0aW9ucy52MS5FbnVtVmFsdWVPcHRpb25zUgllbnVtVmFsdWVCR1pFZ2l0aHViLmNvbS9nb3BoZXJleC9wcm90b2MtZ2VuLXNjaGVtYXBiL3NjaGVtYXBiL29wdGlvbnMvdjE7b3B0aW9uc3YxYgZwcm90bzM", [file_google_protobuf_descriptor, file_schemapb_schema]);
 
 /**
  * FileOptions apply to every schema generated from the file. 
@@ -104,6 +104,33 @@ export const MessageOptionsSchema: GenMessage<MessageOptions> = /*@__PURE__*/
   messageDesc(file_schemapb_options_v1_options, 1);
 
 /**
+ *
+ * AnyOptions list the message types a google.protobuf.Any field may hold.
+ * The field validates as a union on "@type" ("type.googleapis.com/<full
+ * name>"): the packed message is unpacked and checked against its own
+ * schema; any other type is ERROR_CODE_UNKNOWN_VARIANT. Without types the
+ * field is json and only its "@type" is seen. Every listed type must be
+ * visible to the file (imported).
+ *
+ * @generated from message schemapb.options.v1.AnyOptions
+ */
+export type AnyOptions = Message<"schemapb.options.v1.AnyOptions"> & {
+  /**
+   * Full names of the allowed message types, e.g. "acme.v1.Card". 
+   *
+   * @generated from field: repeated string types = 1;
+   */
+  types: string[];
+};
+
+/**
+ * Describes the message schemapb.options.v1.AnyOptions.
+ * Use `create(AnyOptionsSchema)` to create a new message.
+ */
+export const AnyOptionsSchema: GenMessage<AnyOptions> = /*@__PURE__*/
+  messageDesc(file_schemapb_options_v1_options, 2);
+
+/**
  * OneofOptions configure a (non-synthetic) oneof. 
  *
  * @generated from message schemapb.options.v1.OneofOptions
@@ -123,7 +150,7 @@ export type OneofOptions = Message<"schemapb.options.v1.OneofOptions"> & {
  * Use `create(OneofOptionsSchema)` to create a new message.
  */
 export const OneofOptionsSchema: GenMessage<OneofOptions> = /*@__PURE__*/
-  messageDesc(file_schemapb_options_v1_options, 2);
+  messageDesc(file_schemapb_options_v1_options, 3);
 
 /**
  * EnumValueOptions configure the choice option an enum value becomes. 
@@ -159,7 +186,7 @@ export type EnumValueOptions = Message<"schemapb.options.v1.EnumValueOptions"> &
  * Use `create(EnumValueOptionsSchema)` to create a new message.
  */
 export const EnumValueOptionsSchema: GenMessage<EnumValueOptions> = /*@__PURE__*/
-  messageDesc(file_schemapb_options_v1_options, 3);
+  messageDesc(file_schemapb_options_v1_options, 4);
 
 /**
  * Schema of the field. 
@@ -170,12 +197,20 @@ export const field: GenExtension<FieldOptions, Schema_Field> = /*@__PURE__*/
   extDesc(file_schemapb_options_v1_options, 0);
 
 /**
+ * Allowed types of an Any field. 
+ *
+ * @generated from extension: schemapb.options.v1.AnyOptions any = 60051;
+ */
+export const any: GenExtension<FieldOptions, AnyOptions> = /*@__PURE__*/
+  extDesc(file_schemapb_options_v1_options, 1);
+
+/**
  * Options for every schema generated from the file. 
  *
  * @generated from extension: schemapb.options.v1.FileOptions file = 60050;
  */
 export const file: GenExtension<FileOptions$1, FileOptions> = /*@__PURE__*/
-  extDesc(file_schemapb_options_v1_options, 1);
+  extDesc(file_schemapb_options_v1_options, 2);
 
 /**
  * Schema options of the message. 
@@ -183,7 +218,7 @@ export const file: GenExtension<FileOptions$1, FileOptions> = /*@__PURE__*/
  * @generated from extension: schemapb.options.v1.MessageOptions message = 60050;
  */
 export const message: GenExtension<MessageOptions$1, MessageOptions> = /*@__PURE__*/
-  extDesc(file_schemapb_options_v1_options, 2);
+  extDesc(file_schemapb_options_v1_options, 3);
 
 /**
  * Options of the oneof. 
@@ -191,7 +226,7 @@ export const message: GenExtension<MessageOptions$1, MessageOptions> = /*@__PURE
  * @generated from extension: schemapb.options.v1.OneofOptions oneof = 60050;
  */
 export const oneof: GenExtension<OneofOptions$1, OneofOptions> = /*@__PURE__*/
-  extDesc(file_schemapb_options_v1_options, 3);
+  extDesc(file_schemapb_options_v1_options, 4);
 
 /**
  * Choice-option settings of the enum value. 
@@ -199,5 +234,5 @@ export const oneof: GenExtension<OneofOptions$1, OneofOptions> = /*@__PURE__*/
  * @generated from extension: schemapb.options.v1.EnumValueOptions enum_value = 60050;
  */
 export const enum_value: GenExtension<EnumValueOptions$1, EnumValueOptions> = /*@__PURE__*/
-  extDesc(file_schemapb_options_v1_options, 4);
+  extDesc(file_schemapb_options_v1_options, 5);
 

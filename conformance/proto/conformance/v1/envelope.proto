@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package conformance.v1;
+
+import "conformance/other/v1/other.proto";
+import "conformance/v1/conformance.proto";
+import "google/protobuf/any.proto";
+import "schemapb/options/v1/options.proto";
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/v1;conformancev1";
+
+// Any unions, map key constraints and Resolve write-back.
+message Envelope {
+  // A union over two types, one from another package.
+  google.protobuf.Any payload = 1 [(schemapb.options.v1.any) = {
+    types: ["conformance.other.v1.Ref", "conformance.v1.Address"]
+  }];
+  // No types: json, only "@type" is seen.
+  google.protobuf.Any opaque = 2;
+  map<string, int32> scores = 3 [(schemapb.options.v1.field).map = {
+    key_field: {string: {pattern: "^[a-z]+$"}}
+    value_field: {int32: {gte: 0}}
+  }];
+  map<int32, string> by_id = 4 [(schemapb.options.v1.field).map = {
+    key_field: {int32: {gt: 0}}
+  }];
+  string slug = 5 [(schemapb.options.v1.field) = {
+    normalize: "this.lowerAscii()"
+    string: {pattern: "^[a-z-]+$"}
+  }];
+  optional string region = 6 [(schemapb.options.v1.field).string = {default: "eu"}];
+  int32 tag_count = 7 [(schemapb.options.v1.field).computed = {expr: "size(root.tags)"}];
+  repeated string tags = 8;
+  repeated google.protobuf.Any items = 9 [(schemapb.options.v1.any) = {types: ["conformance.other.v1.Ref"]}];
+}

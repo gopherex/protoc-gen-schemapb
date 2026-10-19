@@ -283,5 +283,76 @@
       "title": "t",
       "count": 2
     }
+  },
+  {
+    "name": "envelope_valid",
+    "message": "conformance.v1.Envelope",
+    "resolve": true,
+    "input": {
+      "payload": {
+        "@type": "type.googleapis.com/conformance.v1.Address",
+        "city": "Rome",
+        "zip": "00100"
+      },
+      "opaque": {
+        "@type": "type.googleapis.com/conformance.other.v1.Ref",
+        "id": "x"
+      },
+      "scores": {
+        "ann": 1
+      },
+      "byId": {
+        "7": "seven"
+      },
+      "slug": "Hello-World",
+      "tags": [
+        "a",
+        "b",
+        "c"
+      ],
+      "items": [
+        {
+          "@type": "type.googleapis.com/conformance.other.v1.Ref",
+          "id": "abc"
+        }
+      ]
+    }
+  },
+  {
+    "name": "envelope_invalid",
+    "message": "conformance.v1.Envelope",
+    "resolve": true,
+    "input": {
+      "payload": {
+        "@type": "type.googleapis.com/conformance.other.v1.Ref",
+        "id": "x"
+      },
+      "scores": {
+        "Bad": -1,
+        "ok": 2
+      },
+      "byId": {
+        "0": "zero",
+        "-3": "neg"
+      },
+      "slug": "no spaces",
+      "items": [
+        {
+          "@type": "type.googleapis.com/conformance.other.v1.Ref",
+          "id": "y"
+        },
+        {
+          "@type": "type.googleapis.com/conformance.v1.Address",
+          "city": "A",
+          "zip": "12345"
+        }
+      ]
+    }
+  },
+  {
+    "name": "envelope_empty",
+    "message": "conformance.v1.Envelope",
+    "resolve": true,
+    "input": {}
   }
 ]
