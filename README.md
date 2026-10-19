@@ -5,9 +5,14 @@ Validators generated from `.proto` options, on the
 for now.
 
 - **No vendor lock-in.** The options file and the plugins live here and are
-  fetched straight from git (easyp deps, `go install`). Generated code
-  depends only on the schemapb runtime: `github.com/gopherex/schemapb/go`,
-  `@gopherex/schemapb`. No registry, no proxy, no protoc required.
+  fetched straight from git (easyp deps, `go install`). No registry, no
+  proxy, no protoc required. At run time a service needs the schemapb
+  runtime (`github.com/gopherex/schemapb/go`, `@gopherex/schemapb`) and the
+  generated code of the imported protos: in Go the options package of this
+  module (protoc-gen-go output imports every imported file's package; it
+  pulls in only `schemapb/go` and `google.golang.org/protobuf`), in
+  TypeScript the `_pb` files of `options.proto` and the schemapb protos
+  (generate them with `with_imports: true`).
 - **Defects fail generation, not production.** The plugin builds a
   `schemapb.Schema` per message, checks it and compiles every CEL
   expression. A kind that contradicts the proto type, a broken rule or a
@@ -38,6 +43,7 @@ generate:
     - name: es                   # protoc-gen-es (protobuf-es v2)
       out: web/gen
       opts: {target: ts}
+      with_imports: true         # options_pb / schema_pb / value_pb the _pb files import
     - name: ts-schemapb          # go install github.com/gopherex/protoc-gen-schemapb/cmd/protoc-gen-ts-schemapb@vX.Y.Z
       out: web/gen
 ```
