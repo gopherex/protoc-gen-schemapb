@@ -56,6 +56,7 @@ configure: ## Fetch all pinned tools into ./bin and install the TS harness
 	npm install --prefix "$(TOOLS)/npm-yarn" --no-save --silent yarn@$(YARN_BOOTSTRAP_VERSION)
 	ln -sf "$(TOOLS)/npm-yarn/node_modules/.bin/yarn" "$(BIN)/yarn"
 	cd conformance/ts && $(YARN) install --immutable
+	cd ts && $(YARN) install --immutable
 	echo "✓ configure done — tools in $(BIN)"
 
 .PHONY: build
@@ -72,6 +73,11 @@ descriptors: ## Compile every proto into .build/descriptors.binpb
 .PHONY: gen
 gen: build descriptors ## Regenerate options Go code and the conformance code
 	$(PROTOCGEN) -plugin "$(BIN)/protoc-gen-go" -out . -opt paths=source_relative \
+	  schemapb/options/v1/options.proto
+	# The npm package of the options: schemapb protos come from @gopherex/schemapb.
+	rm -rf ts/src/schemapb
+	$(PROTOCGEN) -plugin ts/node_modules/.bin/protoc-gen-es -out ts/src \
+	  -opt target=ts,import_extension=js,rewrite_imports=./schemapb/*_pb.js:@gopherex/schemapb \
 	  schemapb/options/v1/options.proto
 	rm -rf conformance/gen/go conformance/ts/gen
 	$(PROTOCGEN) -plugin "$(BIN)/protoc-gen-go" -out conformance/gen/go -opt paths=source_relative $(CONF_PROTO)
@@ -94,7 +100,7 @@ golden: ## Rewrite the conformance goldens from the Go backend (reference)
 	go test ./conformance/go -update
 
 .PHONY: test
-test: test-go test-ts ## Run all tests
+test: test-go test-ts test-pkg ## Run all tests
 
 .PHONY: test-go
 test-go: ## Go tests: frontend, backends, Go conformance
@@ -103,6 +109,10 @@ test-go: ## Go tests: frontend, backends, Go conformance
 .PHONY: test-ts
 test-ts: ## TS conformance against the released @gopherex/schemapb runtime
 	cd conformance/ts && $(YARN) typecheck && $(YARN) test
+
+.PHONY: test-pkg
+test-pkg: ## Typecheck, test and build the @gopherex/protoc-gen-schemapb npm package (ts/)
+	cd ts && $(YARN) typecheck && $(YARN) test && $(YARN) build
 
 .PHONY: lint
 lint: ## Lint protos (easyp) and Go code (golangci-lint)

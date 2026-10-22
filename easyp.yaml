@@ -8,7 +8,7 @@ lint:
   ignore:
     - conformance
 deps:
-  - github.com/gopherex/schemapb@v1.9.5
+  - github.com/gopherex/schemapb@v1.9.7
 generate:
   inputs:
     - directory: schemapb

@@ -1,0 +1,45 @@
+# A vX.Y.Z tag is the Go release (go install / easyp resolve it) and
+# publishes @gopherex/protoc-gen-schemapb (ts/) to GitHub Packages.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: '[[ "$RELEASE_TAG" =~ ^v[01]\.[0-9]+\.[0-9]+$ ]]'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://npm.pkg.github.com
+          scope: '@gopherex'
+      - run: corepack enable
+      - working-directory: ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn install --immutable && yarn build
+      - name: Stamp and publish
+        working-directory: ts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm version --no-git-tag-version "${GITHUB_REF_NAME#v}"
+          npm publish

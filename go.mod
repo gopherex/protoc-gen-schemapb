@@ -3,7 +3,7 @@ module github.com/gopherex/protoc-gen-schemapb
 go 1.25.7
 
 require (
-	github.com/gopherex/schemapb/go v1.9.5
+	github.com/gopherex/schemapb/go v1.9.7
 	google.golang.org/protobuf v1.36.11
 )
 

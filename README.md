@@ -11,8 +11,9 @@ for now.
   generated code of the imported protos: in Go the options package of this
   module (protoc-gen-go output imports every imported file's package; it
   pulls in only `schemapb/go` and `google.golang.org/protobuf`), in
-  TypeScript the `_pb` files of `options.proto` and the schemapb protos
-  (generate them with `with_imports: true`).
+  TypeScript the npm packages `@gopherex/protoc-gen-schemapb` (the
+  `options_pb` module) and `@gopherex/schemapb` (the schemapb protos and the
+  runtime), both on GitHub Packages.
 - **Defects fail generation, not production.** The plugin builds a
   `schemapb.Schema` per message, checks it and compiles every CEL
   expression. A kind that contradicts the proto type or a broken rule stops
@@ -44,11 +45,30 @@ generate:
       opts: {paths: source_relative}
     - name: es                   # protoc-gen-es (protobuf-es v2)
       out: web/gen
-      opts: {target: ts}
-      with_imports: true         # options_pb / schema_pb / value_pb the _pb files import
+      opts:
+        target: ts
+        import_extension: js
+        rewrite_imports:         # import the imported protos from the packages
+          - ./schemapb/options/**/*_pb.js:@gopherex/protoc-gen-schemapb
+          - ./schemapb/*_pb.js:@gopherex/schemapb
     - name: ts-schemapb          # go install github.com/gopherex/protoc-gen-schemapb/cmd/protoc-gen-ts-schemapb@vX.Y.Z
       out: web/gen
+      opts: {import_extension: js}
 ```
+
+```sh
+# .npmrc / .yarnrc.yml: @gopherex resolves from https://npm.pkg.github.com
+npm install @gopherex/schemapb @gopherex/protoc-gen-schemapb @bufbuild/protobuf
+```
+
+Do not generate the imported protos yourself (`with_imports`): a second
+copy of the schemapb descriptors is a second set of types, and messages of
+one are not the messages of the other. The packages export each module at
+its proto path (`@gopherex/schemapb/schemapb/errors_pb.js`,
+`@gopherex/protoc-gen-schemapb/schemapb/options/v1/options_pb.js`), and
+`@gopherex/protoc-gen-schemapb` takes `@gopherex/schemapb` as a peer, so one
+instance serves the whole application. Package versions follow the git tags
+of their repositories.
 
 `protoc-gen-ts-schemapb` parameters, as `protoc-gen-es`: `target=ts|js|dts`
 or a `+` combination (default `ts`), `import_extension=none|js|ts` (default

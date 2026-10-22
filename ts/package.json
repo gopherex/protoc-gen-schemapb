@@ -1,0 +1,55 @@
+{
+  "name": "@gopherex/protoc-gen-schemapb",
+  "version": "0.0.0",
+  "description": "protobuf-es code of schemapb/options/v1/options.proto, the options read by protoc-gen-schemapb",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gopherex/protoc-gen-schemapb.git",
+    "directory": "ts"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schemapb/options/v1/options_pb.js": {
+      "types": "./dist/schemapb/options/v1/options_pb.d.ts",
+      "import": "./dist/schemapb/options/v1/options_pb.js"
+    },
+    "./schemapb/options/v1/options_pb": {
+      "types": "./dist/schemapb/options/v1/options_pb.d.ts",
+      "import": "./dist/schemapb/options/v1/options_pb.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "packageManager": "yarn@4.10.3",
+  "peerDependencies": {
+    "@bufbuild/protobuf": "^2.11.0",
+    "@gopherex/schemapb": "^1.9.7"
+  },
+  "devDependencies": {
+    "@bufbuild/protobuf": "^2.11.0",
+    "@bufbuild/protoc-gen-es": "^2.11.0",
+    "@gopherex/schemapb": "1.9.7",
+    "@types/node": "^26.1.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
