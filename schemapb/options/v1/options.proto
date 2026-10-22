@@ -24,6 +24,9 @@ option go_package = "github.com/gopherex/protoc-gen-schemapb/schemapb/options/v1
  *
  * Expressions (rules, when, normalize) are CEL. In a message rule `this` is
  * the message; `root` is always the message being validated at the top.
+ * Both are maps keyed by proto field name, so a field named with a CEL
+ * reserved word (in, namespace, const, ...) is reached by index:
+ * this["in"], and its presence tested with "in" in this.
  *
  * Translation: errors are data (code, typed expected/actual, rule id), and
  * clients render them from a per-locale catalog keyed by the ErrorCode

@@ -12,6 +12,7 @@ package frontend
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"google.golang.org/protobuf/compiler/protogen"
@@ -131,7 +132,10 @@ func (b *builder) message(msg *protogen.Message) (*schemapb.Schema, error) {
 	return schema, nil
 }
 
-// oneofRule enforces a required oneof: one member must be set.
+// oneofRule enforces a required oneof: one member must be set. Presence is
+// tested by key ("name" in this), not has(this.name): `this` is a map, and
+// a member named with a CEL reserved word (in, true, ...) is not a valid
+// selector.
 func oneofRule(oneof *protogen.Oneof) *schemapb.Schema_Field_Rule {
 	if oneof.Desc.IsSynthetic() {
 		return nil
@@ -147,7 +151,7 @@ func oneofRule(oneof *protogen.Oneof) *schemapb.Schema_Field_Rule {
 
 	for i, f := range oneof.Fields {
 		names[i] = string(f.Desc.Name())
-		checks[i] = "has(this." + names[i] + ")"
+		checks[i] = strconv.Quote(names[i]) + " in this"
 	}
 
 	id := "oneof:" + string(oneof.Desc.Name())

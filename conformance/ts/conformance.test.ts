@@ -25,6 +25,7 @@ import { file_conformance_other_v1_other } from "./gen/conformance/other/v1/othe
 import { file_conformance_v1_conformance } from "./gen/conformance/v1/conformance_pb.js";
 import { EnvelopeValidator } from "./gen/conformance/v1/envelope_schemapb.js";
 import { KindsValidator } from "./gen/conformance/v1/kinds_schemapb.js";
+import { FailureValidator, ReservedValidator } from "./gen/conformance/v1/reserved_schemapb.js";
 
 const root = join(import.meta.dirname, "..");
 
@@ -48,6 +49,8 @@ const validators: Record<string, Validator<DescMessage>> = {
   "conformance.other.v1.Ref": RefValidator,
   "conformance.edition.v1.Doc": DocValidator,
   "conformance.v1.Envelope": EnvelopeValidator,
+  "conformance.v1.Reserved": ReservedValidator,
+  "conformance.v1.Failure": FailureValidator,
 };
 
 const cases = JSON.parse(readFileSync(join(root, "cases.json"), "utf8")) as Case[];

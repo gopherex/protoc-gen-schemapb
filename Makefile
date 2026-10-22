@@ -32,7 +32,7 @@ EASYP     := "$(BIN)/easyp"
 YARN      := "$(BIN)/yarn"
 DESC      := $(BUILD)/descriptors.binpb
 PROTOCGEN := go run ./internal/tools/protocgen -set $(DESC)
-CONF_PROTO := conformance/v1/conformance.proto conformance/v1/kinds.proto conformance/v1/envelope.proto \
+CONF_PROTO := conformance/v1/conformance.proto conformance/v1/kinds.proto conformance/v1/envelope.proto conformance/v1/reserved.proto \
   conformance/other/v1/other.proto conformance/edition/v1/edition.proto
 # TypeScript only: its names clash in protoc-gen-go itself.
 TS_ONLY_PROTO := conformance/names/v1/names.proto
@@ -78,14 +78,14 @@ gen: build descriptors ## Regenerate options Go code and the conformance code
 	$(PROTOCGEN) -plugin "$(BIN)/protoc-gen-go-schemapb" -out conformance/gen/go -opt paths=source_relative $(CONF_PROTO)
 	$(PROTOCGEN) -plugin conformance/ts/node_modules/.bin/protoc-gen-es -out conformance/ts/gen \
 	  -opt target=ts,import_extension=js \
-	  $(CONF_PROTO) $(TS_ONLY_PROTO) schemapb/options/v1/options.proto schemapb/schema.proto schemapb/value.proto
+	  $(CONF_PROTO) $(TS_ONLY_PROTO) schemapb/options/v1/options.proto schemapb/schema.proto schemapb/value.proto schemapb/errors.proto
 	$(PROTOCGEN) -plugin "$(BIN)/protoc-gen-ts-schemapb" -out conformance/ts/gen -opt import_extension=js \
 	  $(CONF_PROTO) $(TS_ONLY_PROTO)
 	# The js+dts targets, consumed by a test as a JavaScript project would.
 	rm -rf conformance/ts/genjs
 	$(PROTOCGEN) -plugin conformance/ts/node_modules/.bin/protoc-gen-es -out conformance/ts/genjs \
 	  -opt target=js+dts,import_extension=js \
-	  $(CONF_PROTO) schemapb/options/v1/options.proto schemapb/schema.proto schemapb/value.proto
+	  $(CONF_PROTO) schemapb/options/v1/options.proto schemapb/schema.proto schemapb/value.proto schemapb/errors.proto
 	$(PROTOCGEN) -plugin "$(BIN)/protoc-gen-ts-schemapb" -out conformance/ts/genjs \
 	  -opt target=js+dts,import_extension=js $(CONF_PROTO)
 

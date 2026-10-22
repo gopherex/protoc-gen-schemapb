@@ -66,6 +66,7 @@ func newMessage(t *testing.T, name string) validated {
 	_ = conformancev1.File_conformance_v1_conformance_proto
 	_ = conformancev1.File_conformance_v1_kinds_proto
 	_ = conformancev1.File_conformance_v1_envelope_proto
+	_ = conformancev1.File_conformance_v1_reserved_proto
 	_ = otherv1.File_conformance_other_v1_other_proto
 	_ = editionv1.File_conformance_edition_v1_edition_proto
 
@@ -137,6 +138,7 @@ func TestSchemas(t *testing.T) {
 	for _, name := range []string{
 		"conformance.v1.User", "conformance.v1.User.Settings", "conformance.v1.Address", "conformance.v1.Node",
 		"conformance.v1.Kinds", "conformance.other.v1.Ref", "conformance.edition.v1.Doc", "conformance.v1.Envelope",
+		"conformance.v1.Reserved", "conformance.v1.Failure",
 	} {
 		msg := newMessage(t, name)
 		checkGolden(t, filepath.Join("..", "golden", "schema."+name+".json"), msg.SchemaPB())

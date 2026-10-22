@@ -81,8 +81,8 @@ var _User_schemapb = sync.OnceValue(func() *protomsg.Validator {
 		"lanr\x14\n\t\n\aJ\x05basic\n\a\n\x05J\x03pro\"S\n*this.tier != 'TIER_" +
 		"GOLD' || this.age >= 18\x12\x19gold users must be adul" +
 		"ts\x1a\nadult-gold\"/\n\x14size(this.name) < 20\x12\tlong nam" +
-		"e\x1a\nshort-name \x02\"Z\n%has(this.phone) || has(this.t" +
-		"elegram)\x12\"one of phone, telegram is required\x1a\ron" +
+		"e\x1a\nshort-name \x02\"Z\n%\"phone\" in this || \"telegram\"" +
+		" in this\x12\"one of phone, telegram is required\x1a\ron" +
 		"eof:contactJq\n\x16conformance.v1.Address\x12W\n!\n\x0econfo" +
 		"rmance.v1\x12\aAddress\x1a\x06v1.0.0\x12\x11A postal address.\x1a\n\n" +
 		"\x04cityj\x02 \x01\x1a\x13\n\x03zipj\f2\n^[0-9]{5}$J\x9f\x01\n\x13conformance.v" +

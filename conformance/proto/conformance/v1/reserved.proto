@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package conformance.v1;
+
+import "schemapb/errors.proto";
+import "schemapb/options/v1/options.proto";
+
+option go_package = "github.com/gopherex/protoc-gen-schemapb/conformance/gen/go/conformance/v1;conformancev1";
+
+// Fields named with CEL reserved words. Expressions reach them by index:
+// this["in"], "in" in this.
+message Reserved {
+  option (schemapb.options.v1.message) = {
+    rules: {
+      expr: "!(\"in\" in this) || this[\"in\"] != this[\"namespace\"]"
+      message: "in must differ from namespace"
+      id: "in_ne_namespace"
+    }
+  };
+
+  string namespace = 1 [(schemapb.options.v1.field).string = {min_len: 1}];
+  string const = 3 [(schemapb.options.v1.field) = {
+    when: "root[\"namespace\"] == \"strict\""
+    string: {min_len: 1}
+  }];
+  int64 while = 4 [(schemapb.options.v1.field).int64 = {gte: 0}];
+  // A required oneof whose members are reserved words: has(this.in) does
+  // not parse, the generated rule must use "in" in this.
+  oneof reason {
+    option (schemapb.options.v1.oneof).required = true;
+    string in = 2;
+    string function = 5;
+  }
+}
+
+// Embeds schemapb.ValidationResult, whose SchemaIdentity has "namespace".
+message Failure {
+  oneof reason {
+    option (schemapb.options.v1.oneof).required = true;
+    schemapb.ValidationResult invalid = 1;
+    string other = 2;
+  }
+}

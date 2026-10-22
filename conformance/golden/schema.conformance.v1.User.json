@@ -300,7 +300,7 @@
       "severity": "SEVERITY_WARNING"
     },
     {
-      "expr": "has(this.phone) || has(this.telegram)",
+      "expr": "\"phone\" in this || \"telegram\" in this",
       "id": "oneof:contact",
       "message": "one of phone, telegram is required"
     }

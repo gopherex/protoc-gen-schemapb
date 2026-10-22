@@ -15,8 +15,10 @@ for now.
   (generate them with `with_imports: true`).
 - **Defects fail generation, not production.** The plugin builds a
   `schemapb.Schema` per message, checks it and compiles every CEL
-  expression. A kind that contradicts the proto type, a broken rule or a
-  reserved field name stops the `protoc`/`easyp` run with the field's name.
+  expression. A kind that contradicts the proto type or a broken rule stops
+  the `protoc`/`easyp` run with the field's name. A field named with a CEL
+  reserved word (`in`, `namespace`, `const`, ...) is fine: expressions reach
+  it by index, `this["in"]`, and test presence with `"in" in this`.
 - **One semantics, two languages.** Both plugins share one frontend and embed
   the same schema; both runtimes reproduce the same goldens byte for byte
   (`conformance/`).

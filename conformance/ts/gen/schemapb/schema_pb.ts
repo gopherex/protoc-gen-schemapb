@@ -167,7 +167,11 @@ export const SchemaSchema: GenMessage<Schema> = /*@__PURE__*/
  */
 export type Schema_Field = Message<"schemapb.Schema.Field"> & {
   /**
-   * Field name; the key under which the value lives in the form. 
+   *
+   * Field name; the key under which the value lives in the form. An
+   * identifier ([A-Za-z_][A-Za-z0-9_]*). A CEL reserved word (in,
+   * namespace, const, ...) is a valid name: expressions reach such a
+   * field by index — this["in"], "in" in this — since `this` is a map.
    *
    * @generated from field: string name = 1;
    */

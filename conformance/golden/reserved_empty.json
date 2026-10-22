@@ -1,0 +1,40 @@
+{
+  "errors": [
+    {
+      "actual": {
+        "stringValue": ""
+      },
+      "code": "ERROR_CODE_MIN_LEN_VIOLATED",
+      "constraint": "min_len",
+      "expected": {
+        "uint64Value": "1"
+      },
+      "message": "length must be at least 1",
+      "path": "namespace",
+      "pathSegments": [
+        {
+          "fieldNumber": 1,
+          "key": "namespace"
+        }
+      ],
+      "severity": "SEVERITY_ERROR"
+    },
+    {
+      "code": "ERROR_CODE_RULE_VIOLATED",
+      "expr": "\"in\" in this || \"function\" in this",
+      "message": "one of in, function is required",
+      "path": "oneof:reason",
+      "pathSegments": [
+        {
+          "key": "oneof:reason"
+        }
+      ],
+      "ruleId": "oneof:reason",
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Reserved",
+    "namespace": "conformance.v1"
+  }
+}

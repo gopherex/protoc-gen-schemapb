@@ -1,0 +1,525 @@
+{
+  "defs": {
+    "schemapb.ListValue": {
+      "description": "ListValue is an ordered sequence of values.",
+      "fields": [
+        {
+          "list": {
+            "items": [
+              {
+                "name": "item",
+                "ref": {
+                  "name": "schemapb.Value"
+                }
+              }
+            ]
+          },
+          "name": "items"
+        }
+      ],
+      "id": {
+        "name": "ListValue",
+        "namespace": "schemapb"
+      }
+    },
+    "schemapb.PathSegment": {
+      "description": "Unambiguous location in a value tree. Keys may contain any characters.",
+      "fields": [
+        {
+          "name": "key",
+          "string": {}
+        },
+        {
+          "name": "index",
+          "uint64": {}
+        },
+        {
+          "description": "Wire field number of the proto field this key names, when the value was\nvalidated as a typed proto message (protoc-gen-schemapb). Stable under\nfield renames. Absent for plain values, list indexes and map keys.",
+          "name": "field_number",
+          "uint32": {}
+        }
+      ],
+      "id": {
+        "name": "PathSegment",
+        "namespace": "schemapb"
+      }
+    },
+    "schemapb.SchemaIdentity": {
+      "description": "SchemaIdentity is the stable, system-assigned identity of a Schema. A Schema\nis addressed by this identity rather than a free-form name.",
+      "fields": [
+        {
+          "description": "Grouping namespace, e.g. a product or team. Optional.",
+          "name": "namespace",
+          "string": {}
+        },
+        {
+          "description": "Schema name, unique within its namespace. Required.",
+          "name": "name",
+          "string": {}
+        },
+        {
+          "description": "Schema version, e.g. \"v1\" or a semver string. Optional.",
+          "name": "version",
+          "string": {}
+        }
+      ],
+      "id": {
+        "name": "SchemaIdentity",
+        "namespace": "schemapb"
+      }
+    },
+    "schemapb.StructValue": {
+      "description": "StructValue is a string-keyed map of values: the representation of a whole\nform, an Object field's value, and a Map field's value.",
+      "fields": [
+        {
+          "map": {
+            "keyField": {
+              "name": "key",
+              "string": {}
+            },
+            "valueField": {
+              "name": "value",
+              "ref": {
+                "name": "schemapb.Value"
+              }
+            }
+          },
+          "name": "fields"
+        }
+      ],
+      "id": {
+        "name": "StructValue",
+        "namespace": "schemapb"
+      }
+    },
+    "schemapb.ValidationError": {
+      "description": "ValidationError is a single validation failure. The contract fields are\npath, code and the typed expected/actual values; ordering of errors in a\nValidationResult is deterministic (schema field order, then constraint\norder) as defined by the spec, so conformance can compare results across\nimplementations byte-for-byte.",
+      "fields": [
+        {
+          "description": "Path to the failed field, e.g. \"max_connections\",\n\"subnets.my-subnet-a.cidr\", \"replicas[3].name\". Empty for form-level\nfailures.",
+          "name": "path",
+          "string": {}
+        },
+        {
+          "choice": {
+            "options": [
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_UNSPECIFIED"
+                }
+              },
+              {
+                "description": "Value/type shape.",
+                "value": {
+                  "stringValue": "ERROR_CODE_TYPE_MISMATCH"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_REQUIRED_MISSING"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_NOT_NULLABLE"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_UNKNOWN_FIELD"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_IMMUTABLE_MODIFIED"
+                }
+              },
+              {
+                "description": "Scalar constraints.",
+                "value": {
+                  "stringValue": "ERROR_CODE_CONST_MISMATCH"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_GT_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_GTE_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_LT_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_LTE_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_NOT_IN_ALLOWED_SET"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_IN_FORBIDDEN_SET"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_MULTIPLE_OF_VIOLATED"
+                }
+              },
+              {
+                "description": "String constraints.",
+                "value": {
+                  "stringValue": "ERROR_CODE_LEN_MISMATCH"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_MIN_LEN_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_MAX_LEN_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_PATTERN_MISMATCH"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_FORMAT_MISMATCH"
+                }
+              },
+              {
+                "description": "String/bytes affix constraints.",
+                "value": {
+                  "stringValue": "ERROR_CODE_PREFIX_MISMATCH"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_SUFFIX_MISMATCH"
+                }
+              },
+              {
+                "description": "The schema names a format this implementation does not support. Failing\nloudly is mandatory: a format may never be silently skipped.",
+                "value": {
+                  "stringValue": "ERROR_CODE_UNSUPPORTED_FORMAT"
+                }
+              },
+              {
+                "description": "Choice constraints.",
+                "value": {
+                  "stringValue": "ERROR_CODE_CHOICE_NOT_ALLOWED"
+                }
+              },
+              {
+                "description": "List constraints.",
+                "value": {
+                  "stringValue": "ERROR_CODE_MIN_ITEMS_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_MAX_ITEMS_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_NOT_UNIQUE"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_LIST_COUNT_MISMATCH"
+                }
+              },
+              {
+                "description": "Map constraints.",
+                "value": {
+                  "stringValue": "ERROR_CODE_MIN_ENTRIES_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_MAX_ENTRIES_VIOLATED"
+                }
+              },
+              {
+                "description": "Form-level constraints.",
+                "value": {
+                  "stringValue": "ERROR_CODE_MIN_PROPERTIES_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_MAX_PROPERTIES_VIOLATED"
+                }
+              },
+              {
+                "description": "Composition.",
+                "value": {
+                  "stringValue": "ERROR_CODE_DISCRIMINATOR_MISSING"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_UNKNOWN_VARIANT"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_UNKNOWN_REF"
+                }
+              },
+              {
+                "description": "CEL layer.",
+                "value": {
+                  "stringValue": "ERROR_CODE_RULE_VIOLATED"
+                }
+              },
+              {
+                "value": {
+                  "stringValue": "ERROR_CODE_EXPR_ERROR"
+                }
+              },
+              {
+                "description": "Schema descriptor itself is malformed (bad identity, no kind chosen,\ncomputed-field cycle, invalid CEL/Mustache/pattern source, ...).",
+                "value": {
+                  "stringValue": "ERROR_CODE_INVALID_SCHEMA"
+                }
+              }
+            ]
+          },
+          "description": "Stable machine code identifying the kind of failure.",
+          "name": "code"
+        },
+        {
+          "description": "The constraint boundary that was violated (min/max/const/pattern/allowed\nset/...), as a canonical Value. Absent when not applicable.",
+          "name": "expected",
+          "ref": {
+            "name": "schemapb.Value"
+          }
+        },
+        {
+          "description": "The offending value, canonical form. Absent when not applicable; MASKED\n(absent) for fields marked secret.",
+          "name": "actual",
+          "ref": {
+            "name": "schemapb.Value"
+          }
+        },
+        {
+          "description": "Name of the structured constraint that failed (\"gte\", \"pattern\",\n\"min_items\", ...). Empty for CEL-rule and schema-level failures.",
+          "name": "constraint",
+          "string": {}
+        },
+        {
+          "description": "For CEL failures: the source expression that was violated or errored.",
+          "name": "expr",
+          "string": {}
+        },
+        {
+          "description": "Id of the authored rule that failed, if it declared one.",
+          "name": "rule_id",
+          "string": {}
+        },
+        {
+          "choice": {
+            "options": [
+              {
+                "description": "Unset: treated as ERROR.",
+                "value": {
+                  "stringValue": "SEVERITY_UNSPECIFIED"
+                }
+              },
+              {
+                "description": "Blocks submit.",
+                "value": {
+                  "stringValue": "SEVERITY_ERROR"
+                }
+              },
+              {
+                "description": "Surfaced to the user but does not block submit.",
+                "value": {
+                  "stringValue": "SEVERITY_WARNING"
+                }
+              }
+            ]
+          },
+          "description": "Severity; defaults to ERROR. WARNING errors do not block submit.",
+          "name": "severity"
+        },
+        {
+          "description": "Human-readable message rendered from the code's ErrorSpec template.\nInformative only — NOT part of the conformance contract.",
+          "name": "message",
+          "string": {}
+        },
+        {
+          "description": "Structured counterpart of path; empty for the root.",
+          "list": {
+            "items": [
+              {
+                "name": "item",
+                "ref": {
+                  "name": "schemapb.PathSegment"
+                }
+              }
+            ]
+          },
+          "name": "path_segments"
+        },
+        {
+          "bool": {},
+          "description": "True when the failure concerns the map KEY that ends path (see\nSchema.Field.Map.key_field), not the value stored under it.",
+          "name": "key"
+        }
+      ],
+      "id": {
+        "name": "ValidationError",
+        "namespace": "schemapb"
+      }
+    },
+    "schemapb.ValidationResult": {
+      "description": "ValidationResult is the complete outcome of validating a form.",
+      "fields": [
+        {
+          "description": "All failures, in the spec's deterministic order. Empty means valid.",
+          "list": {
+            "items": [
+              {
+                "name": "item",
+                "ref": {
+                  "name": "schemapb.ValidationError"
+                }
+              }
+            ]
+          },
+          "name": "errors"
+        },
+        {
+          "description": "Identity of the schema the value was validated against. Set by typed\nmessage validators (protoc-gen-schemapb); engine-level Validate on\nplain values leaves it unset.",
+          "name": "schema",
+          "ref": {
+            "name": "schemapb.SchemaIdentity"
+          }
+        }
+      ],
+      "id": {
+        "name": "ValidationResult",
+        "namespace": "schemapb"
+      }
+    },
+    "schemapb.Value": {
+      "description": "Value is the typed value container for schemapb. It replaces\ngoogle.protobuf.Value (a JSON model where every number is a double) so that\ninteger kinds keep full 64-bit precision across languages.\n\nMapping to CEL types is 1:1 and defined by the spec:\nint32/int64   -\u003e int        uint32/uint64 -\u003e uint\nfloat/double  -\u003e double     bool          -\u003e bool\nstring        -\u003e string     duration      -\u003e google.protobuf.Duration\ntimestamp     -\u003e google.protobuf.Timestamp\nlist          -\u003e list       struct        -\u003e map\nnull          -\u003e null       bytes         -\u003e bytes\n\nIn protoJSON, int64/uint64 serialise as strings (standard protobuf JSON\nmapping), so JavaScript clients keep precision via bigint.\n\nCanonical form (REQUIRED for conformance): a value stored for a field MUST\nuse the variant matching the field's declared kind — e.g. an Int64 field's\nvalue is always `int64_value`, never `int32_value`, even when it fits.",
+      "fields": [
+        {
+          "choice": {
+            "options": [
+              {
+                "value": {
+                  "stringValue": "NULL_VALUE"
+                }
+              }
+            ]
+          },
+          "name": "null_value"
+        },
+        {
+          "bool": {},
+          "name": "bool_value"
+        },
+        {
+          "int32": {},
+          "name": "int32_value"
+        },
+        {
+          "int64": {},
+          "name": "int64_value"
+        },
+        {
+          "name": "uint32_value",
+          "uint32": {}
+        },
+        {
+          "name": "uint64_value",
+          "uint64": {}
+        },
+        {
+          "float": {},
+          "name": "float_value"
+        },
+        {
+          "double": {},
+          "name": "double_value"
+        },
+        {
+          "name": "string_value",
+          "string": {}
+        },
+        {
+          "duration": {},
+          "name": "duration_value"
+        },
+        {
+          "name": "timestamp_value",
+          "timestamp": {}
+        },
+        {
+          "name": "list_value",
+          "ref": {
+            "name": "schemapb.ListValue"
+          }
+        },
+        {
+          "name": "struct_value",
+          "ref": {
+            "name": "schemapb.StructValue"
+          }
+        },
+        {
+          "bytes": {},
+          "name": "bytes_value"
+        }
+      ],
+      "id": {
+        "name": "Value",
+        "namespace": "schemapb"
+      }
+    }
+  },
+  "description": "Embeds schemapb.ValidationResult, whose SchemaIdentity has \"namespace\".",
+  "fields": [
+    {
+      "name": "invalid",
+      "ref": {
+        "name": "schemapb.ValidationResult"
+      }
+    },
+    {
+      "name": "other",
+      "string": {}
+    }
+  ],
+  "id": {
+    "name": "Failure",
+    "namespace": "conformance.v1"
+  },
+  "rules": [
+    {
+      "expr": "\"invalid\" in this || \"other\" in this",
+      "id": "oneof:reason",
+      "message": "one of invalid, other is required"
+    }
+  ]
+}

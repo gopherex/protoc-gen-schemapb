@@ -354,5 +354,52 @@
     "message": "conformance.v1.Envelope",
     "resolve": true,
     "input": {}
+  },
+  {
+    "name": "reserved_valid",
+    "message": "conformance.v1.Reserved",
+    "input": {
+      "namespace": "a",
+      "const": "c",
+      "while": "1",
+      "in": "b"
+    }
+  },
+  {
+    "name": "reserved_invalid",
+    "message": "conformance.v1.Reserved",
+    "input": {
+      "namespace": "strict",
+      "while": "-1",
+      "in": "strict"
+    }
+  },
+  {
+    "name": "reserved_empty",
+    "message": "conformance.v1.Reserved",
+    "input": {}
+  },
+  {
+    "name": "failure_valid",
+    "message": "conformance.v1.Failure",
+    "input": {
+      "invalid": {
+        "errors": [
+          {
+            "path": "x",
+            "code": "ERROR_CODE_REQUIRED_MISSING"
+          }
+        ],
+        "schema": {
+          "namespace": "n",
+          "name": "m"
+        }
+      }
+    }
+  },
+  {
+    "name": "failure_empty",
+    "message": "conformance.v1.Failure",
+    "input": {}
   }
 ]

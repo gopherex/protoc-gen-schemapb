@@ -122,7 +122,7 @@
     },
     {
       "code": "ERROR_CODE_RULE_VIOLATED",
-      "expr": "has(this.phone) || has(this.telegram)",
+      "expr": "\"phone\" in this || \"telegram\" in this",
       "message": "one of phone, telegram is required",
       "path": "oneof:contact",
       "pathSegments": [

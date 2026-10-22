@@ -153,10 +153,6 @@ func TestSchemaRejects(t *testing.T) {
 			"bad cel", field(`name: "a" number: 1 label: LABEL_OPTIONAL type: TYPE_STRING`, `rules { expr: "this +" message: "m" }`),
 			"Syntax error",
 		},
-		{
-			"reserved word", field(`name: "in" number: 1 label: LABEL_OPTIONAL type: TYPE_STRING`, ``),
-			"CEL reserved word",
-		},
 	}
 
 	for _, tc := range cases {
@@ -185,6 +181,11 @@ func TestSchemaAccepts(t *testing.T) {
 			options { [schemapb.options.v1.field] { json {} } } }`},
 		{"list without kind", `field { name: "a" number: 1 label: LABEL_REPEATED type: TYPE_MESSAGE type_name: ".t.v1.Inner" }`},
 		{"any as json", `field { name: "a" number: 1 label: LABEL_OPTIONAL type: TYPE_MESSAGE type_name: ".google.protobuf.Any" }`},
+		{"reserved names", `field { name: "namespace" number: 1 label: LABEL_OPTIONAL type: TYPE_STRING }
+			field { name: "in" number: 2 label: LABEL_OPTIONAL type: TYPE_STRING oneof_index: 0 }
+			field { name: "true" number: 3 label: LABEL_OPTIONAL type: TYPE_STRING oneof_index: 0 }
+			oneof_decl { name: "reason" options { [schemapb.options.v1.oneof] { required: true } } }
+			options { [schemapb.options.v1.message] { rules { expr: "!(\"in\" in this) || this[\"in\"] != this[\"namespace\"]" message: "m" } } }`},
 	}
 
 	for _, tc := range cases {

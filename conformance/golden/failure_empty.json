@@ -1,0 +1,21 @@
+{
+  "errors": [
+    {
+      "code": "ERROR_CODE_RULE_VIOLATED",
+      "expr": "\"invalid\" in this || \"other\" in this",
+      "message": "one of invalid, other is required",
+      "path": "oneof:reason",
+      "pathSegments": [
+        {
+          "key": "oneof:reason"
+        }
+      ],
+      "ruleId": "oneof:reason",
+      "severity": "SEVERITY_ERROR"
+    }
+  ],
+  "schema": {
+    "name": "Failure",
+    "namespace": "conformance.v1"
+  }
+}

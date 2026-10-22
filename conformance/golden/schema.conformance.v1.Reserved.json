@@ -1,0 +1,48 @@
+{
+  "description": "Fields named with CEL reserved words. Expressions reach them by index:\nthis[\"in\"], \"in\" in this.",
+  "fields": [
+    {
+      "name": "namespace",
+      "string": {
+        "minLen": "1"
+      }
+    },
+    {
+      "name": "const",
+      "string": {
+        "minLen": "1"
+      },
+      "when": "root[\"namespace\"] == \"strict\""
+    },
+    {
+      "int64": {
+        "gte": "0"
+      },
+      "name": "while"
+    },
+    {
+      "name": "in",
+      "string": {}
+    },
+    {
+      "name": "function",
+      "string": {}
+    }
+  ],
+  "id": {
+    "name": "Reserved",
+    "namespace": "conformance.v1"
+  },
+  "rules": [
+    {
+      "expr": "!(\"in\" in this) || this[\"in\"] != this[\"namespace\"]",
+      "id": "in_ne_namespace",
+      "message": "in must differ from namespace"
+    },
+    {
+      "expr": "\"in\" in this || \"function\" in this",
+      "id": "oneof:reason",
+      "message": "one of in, function is required"
+    }
+  ]
+}
